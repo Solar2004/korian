@@ -1,8 +1,8 @@
 import { getDefaultHiddenProviderCommands } from '../../core/providers/commands/hiddenCommands';
-import { type ClaudianSettings } from '../../core/types/settings';
+import { type KorianSettings } from '../../core/types/settings';
 import { getBuiltInProviderDefaultConfigs } from '../../providers/defaultProviderConfigs';
 
-export const DEFAULT_CLAUDIAN_SETTINGS: ClaudianSettings = {
+export const DEFAULT_KORIAN_SETTINGS: KorianSettings = {
   userName: '',
 
   permissionMode: 'yolo',

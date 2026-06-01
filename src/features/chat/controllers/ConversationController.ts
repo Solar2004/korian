@@ -5,7 +5,7 @@ import type { ChatRuntime } from '../../../core/runtime/ChatRuntime';
 import type { ChatRewindMode } from '../../../core/runtime/types';
 import type { Conversation } from '../../../core/types';
 import { t } from '../../../i18n/i18n';
-import type ClaudianPlugin from '../../../main';
+import type KorianPlugin from '../../../main';
 import { confirm } from '../../../shared/modals/ConfirmModal';
 import type { MessageRenderer } from '../rendering/MessageRenderer';
 import { cleanupThinkingBlock } from '../rendering/ThinkingBlockRenderer';
@@ -30,7 +30,7 @@ export interface ConversationCallbacks {
 }
 
 export interface ConversationControllerDeps {
-  plugin: ClaudianPlugin;
+  plugin: KorianPlugin;
   state: ChatState;
   renderer: MessageRenderer;
   subagentManager: SubagentManager;
@@ -146,8 +146,8 @@ export class ConversationController {
       messagesEl.empty();
 
       // Recreate welcome element first (before StatusPanel for consistent ordering)
-      const welcomeEl = messagesEl.createDiv({ cls: 'claudian-welcome' });
-      welcomeEl.createDiv({ cls: 'claudian-welcome-greeting', text: this.getGreeting() });
+      const welcomeEl = messagesEl.createDiv({ cls: 'korian-welcome' });
+      welcomeEl.createDiv({ cls: 'korian-welcome-greeting', text: this.getGreeting() });
       this.deps.setWelcomeEl(welcomeEl);
 
       // Remount StatusPanel to restore state for new conversation
@@ -557,14 +557,14 @@ export class ConversationController {
 
     container.empty();
 
-    const dropdownHeader = container.createDiv({ cls: 'claudian-history-header' });
+    const dropdownHeader = container.createDiv({ cls: 'korian-history-header' });
     dropdownHeader.createSpan({ text: 'Conversations' });
 
-    const list = container.createDiv({ cls: 'claudian-history-list' });
+    const list = container.createDiv({ cls: 'korian-history-list' });
     const allConversations = plugin.getConversationList();
 
     if (allConversations.length === 0) {
-      list.createDiv({ cls: 'claudian-history-empty', text: 'No conversations' });
+      list.createDiv({ cls: 'korian-history-empty', text: 'No conversations' });
       return;
     }
 
@@ -576,17 +576,17 @@ export class ConversationController {
     for (const conv of conversations) {
       const isCurrent = conv.id === state.currentConversationId;
       const item = list.createDiv({
-        cls: `claudian-history-item${isCurrent ? ' active' : ''}`,
+        cls: `korian-history-item${isCurrent ? ' active' : ''}`,
       });
 
-      const iconEl = item.createDiv({ cls: 'claudian-history-item-icon' });
+      const iconEl = item.createDiv({ cls: 'korian-history-item-icon' });
       setIcon(iconEl, isCurrent ? 'message-square-dot' : 'message-square');
 
-      const content = item.createDiv({ cls: 'claudian-history-item-content' });
-      const titleEl = content.createDiv({ cls: 'claudian-history-item-title', text: conv.title });
+      const content = item.createDiv({ cls: 'korian-history-item-content' });
+      const titleEl = content.createDiv({ cls: 'korian-history-item-title', text: conv.title });
       titleEl.setAttribute('title', conv.title);
       content.createDiv({
-        cls: 'claudian-history-item-date',
+        cls: 'korian-history-item-date',
         text: isCurrent ? 'Current session' : this.formatDate(conv.lastResponseAt ?? conv.createdAt),
       });
 
@@ -636,15 +636,15 @@ export class ConversationController {
         this.showHistoryContextMenu(item, conv.id, conv.title, isCurrent, options, e);
       });
 
-      const actions = item.createDiv({ cls: 'claudian-history-item-actions' });
+      const actions = item.createDiv({ cls: 'korian-history-item-actions' });
 
       // Show regenerate button if title generation failed, or loading indicator if pending
       if (conv.titleGenerationStatus === 'pending') {
-        const loadingEl = actions.createEl('span', { cls: 'claudian-action-btn claudian-action-loading' });
+        const loadingEl = actions.createEl('span', { cls: 'korian-action-btn korian-action-loading' });
         setIcon(loadingEl, 'loader-2');
         loadingEl.setAttribute('aria-label', 'Generating title...');
       } else if (conv.titleGenerationStatus === 'failed') {
-        const regenerateBtn = actions.createEl('button', { cls: 'claudian-action-btn' });
+        const regenerateBtn = actions.createEl('button', { cls: 'korian-action-btn' });
         setIcon(regenerateBtn, 'refresh-cw');
         regenerateBtn.setAttribute('aria-label', 'Regenerate title');
         regenerateBtn.addEventListener('click', (e) => {
@@ -656,7 +656,7 @@ export class ConversationController {
         });
       }
 
-      const renameBtn = actions.createEl('button', { cls: 'claudian-action-btn' });
+      const renameBtn = actions.createEl('button', { cls: 'korian-action-btn' });
       setIcon(renameBtn, 'pencil');
       renameBtn.setAttribute('aria-label', 'Rename');
       renameBtn.addEventListener('click', (e) => {
@@ -664,7 +664,7 @@ export class ConversationController {
         this.showRenameInput(item, conv.id, conv.title);
       });
 
-      const deleteBtn = actions.createEl('button', { cls: 'claudian-action-btn claudian-delete-btn' });
+      const deleteBtn = actions.createEl('button', { cls: 'korian-action-btn korian-delete-btn' });
       setIcon(deleteBtn, 'trash-2');
       deleteBtn.setAttribute('aria-label', 'Delete');
       deleteBtn.addEventListener('click', (e) => {
@@ -770,12 +770,12 @@ export class ConversationController {
 
   /** Shows inline rename input for a conversation. */
   private showRenameInput(item: HTMLElement, convId: string, currentTitle: string): void {
-    const titleEl = item.querySelector('.claudian-history-item-title') as HTMLElement;
+    const titleEl = item.querySelector('.korian-history-item-title') as HTMLElement;
     if (!titleEl) return;
 
     const input = (item.ownerDocument ?? window.document).createElement('input');
     input.type = 'text';
-    input.className = 'claudian-rename-input';
+    input.className = 'korian-rename-input';
     input.value = currentTitle;
 
     titleEl.replaceWith(input);
@@ -835,7 +835,7 @@ export class ConversationController {
     // Time-specific greetings
     const getTimeGreetings = (): string[] => {
       if (hour >= 5 && hour < 12) {
-        return [personalize('Good morning'), 'Coffee and Claudian time?'];
+        return [personalize('Good morning'), 'Coffee and Korian time?'];
       } else if (hour >= 12 && hour < 18) {
         return [personalize('Good afternoon'), personalize('Hey there'), personalize("How's it going") + '?'];
       } else if (hour >= 18 && hour < 22) {
@@ -872,9 +872,9 @@ export class ConversationController {
     if (!welcomeEl) return;
 
     if (this.deps.state.messages.length === 0) {
-      welcomeEl.removeClass('claudian-hidden');
+      welcomeEl.removeClass('korian-hidden');
     } else {
-      welcomeEl.addClass('claudian-hidden');
+      welcomeEl.addClass('korian-hidden');
     }
   }
 
@@ -892,8 +892,8 @@ export class ConversationController {
     fileCtx?.autoAttachActiveFile();
 
     // Only add greeting if not already present
-    if (!welcomeEl.querySelector('.claudian-welcome-greeting')) {
-      welcomeEl.createDiv({ cls: 'claudian-welcome-greeting', text: this.getGreeting() });
+    if (!welcomeEl.querySelector('.korian-welcome-greeting')) {
+      welcomeEl.createDiv({ cls: 'korian-welcome-greeting', text: this.getGreeting() });
     }
 
     this.updateWelcomeVisibility();
@@ -975,12 +975,12 @@ export class ConversationController {
   }
 
   // ============================================
-  // History Dropdown Rendering (for ClaudianView)
+  // History Dropdown Rendering (for KorianView)
   // ============================================
 
   /**
    * Renders the history dropdown content to a provided container.
-   * Used by ClaudianView to render the dropdown with custom selection callback.
+   * Used by KorianView to render the dropdown with custom selection callback.
    */
   renderHistoryDropdown(
     container: HTMLElement,

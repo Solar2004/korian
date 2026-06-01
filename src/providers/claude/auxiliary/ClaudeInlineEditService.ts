@@ -14,7 +14,7 @@ import {
   isReadOnlyTool,
   READ_ONLY_TOOLS,
 } from '../../../core/tools/toolNames';
-import type ClaudianPlugin from '../../../main';
+import type KorianPlugin from '../../../main';
 import { appendContextFiles } from '../../../utils/context';
 import { runColdStartQuery } from '../runtime/claudeColdStartQuery';
 
@@ -48,11 +48,11 @@ export function createReadOnlyHook(): HookCallbackMatcher {
 }
 
 export class InlineEditService {
-  private plugin: ClaudianPlugin;
+  private plugin: KorianPlugin;
   private abortController: AbortController | null = null;
   private sessionId: string | null = null;
 
-  constructor(plugin: ClaudianPlugin) {
+  constructor(plugin: KorianPlugin) {
     this.plugin = plugin;
   }
 

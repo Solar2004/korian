@@ -1,9 +1,9 @@
 import { QueryBackedInlineEditService } from '../../../core/auxiliary/QueryBackedInlineEditService';
-import type ClaudianPlugin from '../../../main';
+import type KorianPlugin from '../../../main';
 import { PiAuxQueryRunner } from '../runtime/PiAuxQueryRunner';
 
 export class PiInlineEditService extends QueryBackedInlineEditService {
-  constructor(plugin: ClaudianPlugin) {
+  constructor(plugin: KorianPlugin) {
     super(new PiAuxQueryRunner(plugin, { profile: 'readonly' }));
   }
 }

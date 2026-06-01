@@ -1,17 +1,17 @@
 
 import { TOOL_SUBAGENT } from '@/core/tools/toolNames';
-import { VIEW_TYPE_CLAUDIAN } from '@/core/types';
+import { VIEW_TYPE_KORIAN } from '@/core/types';
 import * as sdkSession from '@/providers/claude/history/ClaudeHistoryStore';
 import { DEFAULT_SETTINGS } from '@/providers/claude/types/settings';
 
-// Mock fs for ClaudianService
+// Mock fs for KorianService
 jest.mock('fs');
 
 // Now import the plugin after mocking
-import ClaudianPlugin from '@/main';
+import KorianPlugin from '@/main';
 
-describe('ClaudianPlugin', () => {
-  let plugin: ClaudianPlugin;
+describe('KorianPlugin', () => {
+  let plugin: KorianPlugin;
   let mockApp: any;
   let mockManifest: any;
 
@@ -62,13 +62,13 @@ describe('ClaudianPlugin', () => {
     };
 
     mockManifest = {
-      id: 'claudian',
-      name: 'Claudian',
+      id: 'korian',
+      name: 'Korian',
       version: '0.1.0',
     };
 
     // Create plugin instance with mocked app
-    plugin = new ClaudianPlugin(mockApp, mockManifest);
+    plugin = new KorianPlugin(mockApp, mockManifest);
     (plugin.loadData as jest.Mock).mockResolvedValue({});
   });
 
@@ -87,7 +87,7 @@ describe('ClaudianPlugin', () => {
       await plugin.onload();
 
       expect((plugin.registerView as jest.Mock)).toHaveBeenCalledWith(
-        VIEW_TYPE_CLAUDIAN,
+        VIEW_TYPE_KORIAN,
         expect.any(Function)
       );
     });
@@ -97,7 +97,7 @@ describe('ClaudianPlugin', () => {
 
       expect((plugin.addRibbonIcon as jest.Mock)).toHaveBeenCalledWith(
         'bot',
-        'Open Claudian',
+        'Open Korian',
         expect.any(Function)
       );
     });
@@ -115,7 +115,7 @@ describe('ClaudianPlugin', () => {
   });
 
   describe('onunload', () => {
-    // Note: With multi-tab, cleanup is handled per-tab via ClaudianView.onClose()
+    // Note: With multi-tab, cleanup is handled per-tab via KorianView.onClose()
     it('should complete without error', async () => {
       await plugin.onload();
 
@@ -146,7 +146,7 @@ describe('ClaudianPlugin', () => {
 
       expect(mockApp.workspace.getRightLeaf).toHaveBeenCalledWith(false);
       expect(mockRightLeaf.setViewState).toHaveBeenCalledWith({
-        type: VIEW_TYPE_CLAUDIAN,
+        type: VIEW_TYPE_KORIAN,
         active: true,
       });
     });
@@ -166,7 +166,7 @@ describe('ClaudianPlugin', () => {
       expect(mockApp.workspace.getRightLeaf).not.toHaveBeenCalled();
       expect(mockApp.workspace.getLeaf).not.toHaveBeenCalled();
       expect(mockLeftLeaf.setViewState).toHaveBeenCalledWith({
-        type: VIEW_TYPE_CLAUDIAN,
+        type: VIEW_TYPE_KORIAN,
         active: true,
       });
     });
@@ -196,7 +196,7 @@ describe('ClaudianPlugin', () => {
       expect(mockApp.workspace.getRightLeaf).not.toHaveBeenCalled();
       expect(mockApp.workspace.getLeftLeaf).not.toHaveBeenCalled();
       expect(mockMainLeaf.setViewState).toHaveBeenCalledWith({
-        type: VIEW_TYPE_CLAUDIAN,
+        type: VIEW_TYPE_KORIAN,
         active: true,
       });
     });
@@ -214,12 +214,12 @@ describe('ClaudianPlugin', () => {
 
   describe('loadSettings', () => {
     it('should merge saved data with defaults', async () => {
-      // Mock claudian-settings.json exists with custom values (Claudian-specific settings)
+      // Mock korian-settings.json exists with custom values (Korian-specific settings)
       mockApp.vault.adapter.exists.mockImplementation(async (path: string) => {
-        return path === '.claudian/claudian-settings.json';
+        return path === '.korian/korian-settings.json';
       });
       mockApp.vault.adapter.read.mockImplementation(async (path: string) => {
-        if (path === '.claudian/claudian-settings.json') {
+        if (path === '.korian/korian-settings.json') {
           return JSON.stringify({
             userName: 'TestUser',
           });
@@ -235,10 +235,10 @@ describe('ClaudianPlugin', () => {
 
     it('should strip legacy blocklist fields when loading old settings', async () => {
       mockApp.vault.adapter.exists.mockImplementation(async (path: string) => {
-        return path === '.claudian/claudian-settings.json';
+        return path === '.korian/korian-settings.json';
       });
       mockApp.vault.adapter.read.mockImplementation(async (path: string) => {
-        if (path === '.claudian/claudian-settings.json') {
+        if (path === '.korian/korian-settings.json') {
           return JSON.stringify({
             enableBlocklist: false,
             blockedCommands: { unix: ['rm -rf', '  '] },
@@ -252,11 +252,11 @@ describe('ClaudianPlugin', () => {
       expect('enableBlocklist' in plugin.settings).toBe(false);
       expect('blockedCommands' in plugin.settings).toBe(false);
       expect(mockApp.vault.adapter.write).toHaveBeenCalledWith(
-        '.claudian/claudian-settings.json',
+        '.korian/korian-settings.json',
         expect.any(String),
       );
       const writeCall = (mockApp.vault.adapter.write as jest.Mock).mock.calls.find(
-        ([path]) => path === '.claudian/claudian-settings.json',
+        ([path]) => path === '.korian/korian-settings.json',
       );
       expect(writeCall).toBeDefined();
       const content = JSON.parse(writeCall[1]);
@@ -286,10 +286,10 @@ describe('ClaudianPlugin', () => {
 
     it('should migrate legacy openInMainTab true to main-tab placement', async () => {
       mockApp.vault.adapter.exists.mockImplementation(async (path: string) => {
-        return path === '.claudian/claudian-settings.json';
+        return path === '.korian/korian-settings.json';
       });
       mockApp.vault.adapter.read.mockImplementation(async (path: string) => {
-        if (path === '.claudian/claudian-settings.json') {
+        if (path === '.korian/korian-settings.json') {
           return JSON.stringify({ openInMainTab: true });
         }
         return '';
@@ -299,7 +299,7 @@ describe('ClaudianPlugin', () => {
 
       expect(plugin.settings.chatViewPlacement).toBe('main-tab');
       const writeCall = (mockApp.vault.adapter.write as jest.Mock).mock.calls.find(
-        ([path]) => path === '.claudian/claudian-settings.json',
+        ([path]) => path === '.korian/korian-settings.json',
       );
       expect(writeCall).toBeDefined();
       const content = JSON.parse(writeCall[1]);
@@ -308,12 +308,12 @@ describe('ClaudianPlugin', () => {
     });
 
     it('should reconcile model from environment and persist when changed', async () => {
-      // Mock claudian-settings.json with environment variables
+      // Mock korian-settings.json with environment variables
       mockApp.vault.adapter.exists.mockImplementation(async (path: string) => {
-        return path === '.claudian/claudian-settings.json';
+        return path === '.korian/korian-settings.json';
       });
       mockApp.vault.adapter.read.mockImplementation(async (path: string) => {
-        if (path === '.claudian/claudian-settings.json') {
+        if (path === '.korian/korian-settings.json') {
           return JSON.stringify({
             environmentVariables: 'ANTHROPIC_MODEL=custom-model',
             lastEnvHash: '',
@@ -336,15 +336,15 @@ describe('ClaudianPlugin', () => {
 
       await plugin.saveSettings();
 
-      // Claudian-specific settings should be written to .claudian/claudian-settings.json
+      // Korian-specific settings should be written to .korian/korian-settings.json
       expect(mockApp.vault.adapter.write).toHaveBeenCalledWith(
-        '.claudian/claudian-settings.json',
+        '.korian/korian-settings.json',
         expect.any(String)
       );
 
       // The written content should include state fields
       const writeCall = (mockApp.vault.adapter.write as jest.Mock).mock.calls.find(
-        ([path]) => path === '.claudian/claudian-settings.json'
+        ([path]) => path === '.korian/korian-settings.json'
       );
       expect(writeCall).toBeDefined();
       const content = JSON.parse(writeCall[1]);
@@ -354,7 +354,7 @@ describe('ClaudianPlugin', () => {
       expect(content).toHaveProperty('lastCustomModel');
       expect(content).not.toHaveProperty('enableBlocklist');
       expect(content).not.toHaveProperty('blockedCommands');
-      // Permissions are now in .claude/settings.json (CC format), not claudian-settings.json
+      // Permissions are now in .claude/settings.json (CC format), not korian-settings.json
       expect(content).not.toHaveProperty('permissions');
     });
   });
@@ -581,7 +581,7 @@ describe('ClaudianPlugin', () => {
       expect(command.checkCallback(true)).toBe(false);
     });
 
-    it('keeps tab commands unavailable while a Claudian leaf view is not initialized', async () => {
+    it('keeps tab commands unavailable while a Korian leaf view is not initialized', async () => {
       await plugin.onload();
 
       mockApp.workspace.getLeavesOfType.mockReturnValue([{ view: {} }]);
@@ -811,26 +811,26 @@ describe('ClaudianPlugin', () => {
       // Mock files exist
       mockApp.vault.adapter.exists.mockImplementation(async (path: string) => {
         // Session files
-        if (path === '.claudian/sessions' || path === '.claudian/sessions/conv-saved-1.meta.json') {
+        if (path === '.korian/sessions' || path === '.korian/sessions/conv-saved-1.meta.json') {
           return true;
         }
-        // claudian-settings.json exists
-        if (path === '.claudian/claudian-settings.json') {
+        // korian-settings.json exists
+        if (path === '.korian/korian-settings.json') {
           return true;
         }
         return false;
       });
       mockApp.vault.adapter.list.mockImplementation(async (path: string) => {
-        if (path === '.claudian/sessions') {
-          return { files: ['.claudian/sessions/conv-saved-1.meta.json'], folders: [] };
+        if (path === '.korian/sessions') {
+          return { files: ['.korian/sessions/conv-saved-1.meta.json'], folders: [] };
         }
         return { files: [], folders: [] };
       });
       mockApp.vault.adapter.read.mockImplementation(async (path: string) => {
-        if (path === '.claudian/sessions/conv-saved-1.meta.json') {
+        if (path === '.korian/sessions/conv-saved-1.meta.json') {
           return sessionMeta;
         }
-        if (path === '.claudian/claudian-settings.json') {
+        if (path === '.korian/korian-settings.json') {
           return JSON.stringify({});
         }
         return '';
@@ -857,25 +857,25 @@ describe('ClaudianPlugin', () => {
       });
 
       mockApp.vault.adapter.exists.mockImplementation(async (path: string) => {
-        return path === '.claudian/claudian-settings.json' ||
-          path === '.claudian/sessions' ||
-          path === '.claudian/sessions/conv-saved-1.meta.json';
+        return path === '.korian/korian-settings.json' ||
+          path === '.korian/sessions' ||
+          path === '.korian/sessions/conv-saved-1.meta.json';
       });
       mockApp.vault.adapter.list.mockImplementation(async (path: string) => {
-        if (path === '.claudian/sessions') {
-          return { files: ['.claudian/sessions/conv-saved-1.meta.json'], folders: [] };
+        if (path === '.korian/sessions') {
+          return { files: ['.korian/sessions/conv-saved-1.meta.json'], folders: [] };
         }
         return { files: [], folders: [] };
       });
       mockApp.vault.adapter.read.mockImplementation(async (path: string) => {
-        if (path === '.claudian/claudian-settings.json') {
-          // All these fields are now in claudian-settings.json
+        if (path === '.korian/korian-settings.json') {
+          // All these fields are now in korian-settings.json
           return JSON.stringify({
             lastEnvHash: 'old-hash',
             environmentVariables: 'ANTHROPIC_BASE_URL=https://api.example.com',
           });
         }
-        if (path === '.claudian/sessions/conv-saved-1.meta.json') {
+        if (path === '.korian/sessions/conv-saved-1.meta.json') {
           return sessionMeta;
         }
         return '';
@@ -890,7 +890,7 @@ describe('ClaudianPlugin', () => {
       expect(loaded?.sessionId).toBeNull();
 
       const sessionWrite = (mockApp.vault.adapter.write as jest.Mock).mock.calls.find(
-        ([path]) => path === '.claudian/sessions/conv-saved-1.meta.json'
+        ([path]) => path === '.korian/sessions/conv-saved-1.meta.json'
       );
       expect(sessionWrite).toBeDefined();
       const meta = JSON.parse(sessionWrite?.[1] as string);
@@ -931,21 +931,21 @@ describe('ClaudianPlugin', () => {
       });
 
       mockApp.vault.adapter.exists.mockImplementation(async (path: string) => {
-        return path === '.claudian/claudian-settings.json' ||
-          path === '.claudian/sessions' ||
-          path === '.claudian/sessions/conv-multi-session.meta.json';
+        return path === '.korian/korian-settings.json' ||
+          path === '.korian/sessions' ||
+          path === '.korian/sessions/conv-multi-session.meta.json';
       });
       mockApp.vault.adapter.list.mockImplementation(async (path: string) => {
-        if (path === '.claudian/sessions') {
-          return { files: ['.claudian/sessions/conv-multi-session.meta.json'], folders: [] };
+        if (path === '.korian/sessions') {
+          return { files: ['.korian/sessions/conv-multi-session.meta.json'], folders: [] };
         }
         return { files: [], folders: [] };
       });
       mockApp.vault.adapter.read.mockImplementation(async (path: string) => {
-        if (path === '.claudian/sessions/conv-multi-session.meta.json') {
+        if (path === '.korian/sessions/conv-multi-session.meta.json') {
           return sessionMeta;
         }
-        if (path === '.claudian/claudian-settings.json') {
+        if (path === '.korian/korian-settings.json') {
           return JSON.stringify({});
         }
         return '';

@@ -1,5 +1,5 @@
 /**
- * Claudian - Session Utilities
+ * Korian - Session Utilities
  *
  * Session recovery and history reconstruction.
  */

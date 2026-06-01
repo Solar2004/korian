@@ -24,7 +24,7 @@ export class McpStorage {
         return [];
       }
 
-      const claudianMeta = file._claudian?.servers ?? {};
+      const korianMeta = file._korian?.servers ?? {};
       const servers: ManagedMcpServer[] = [];
 
       for (const [name, config] of Object.entries(file.mcpServers)) {
@@ -32,7 +32,7 @@ export class McpStorage {
           continue;
         }
 
-        const meta = claudianMeta[name] ?? {};
+        const meta = korianMeta[name] ?? {};
         const disabledTools = Array.isArray(meta.disabledTools)
           ? meta.disabledTools.filter((tool) => typeof tool === 'string')
           : undefined;
@@ -57,7 +57,7 @@ export class McpStorage {
 
   async save(servers: ManagedMcpServer[]): Promise<void> {
     const mcpServers: Record<string, McpServerConfig> = {};
-    const claudianServers: Record<
+    const korianServers: Record<
       string,
       { enabled?: boolean; contextSaving?: boolean; disabledTools?: string[]; description?: string }
     > = {};
@@ -65,7 +65,7 @@ export class McpStorage {
     for (const server of servers) {
       mcpServers[server.name] = server.config;
 
-      // Only store Claudian metadata if different from defaults
+      // Only store Korian metadata if different from defaults
       const meta: {
         enabled?: boolean;
         contextSaving?: boolean;
@@ -90,7 +90,7 @@ export class McpStorage {
       }
 
       if (Object.keys(meta).length > 0) {
-        claudianServers[server.name] = meta;
+        korianServers[server.name] = meta;
       }
     }
 
@@ -110,23 +110,23 @@ export class McpStorage {
     const file: Record<string, unknown> = existing ? { ...existing } : {};
     file.mcpServers = mcpServers;
 
-    const existingClaudian =
-      existing && typeof existing._claudian === 'object'
-        ? (existing._claudian as Record<string, unknown>)
+    const existingKorian =
+      existing && typeof existing._korian === 'object'
+        ? (existing._korian as Record<string, unknown>)
         : null;
 
-    if (Object.keys(claudianServers).length > 0) {
-      file._claudian = { ...(existingClaudian ?? {}), servers: claudianServers };
-    } else if (existingClaudian) {
-      const rest = { ...existingClaudian };
+    if (Object.keys(korianServers).length > 0) {
+      file._korian = { ...(existingKorian ?? {}), servers: korianServers };
+    } else if (existingKorian) {
+      const rest = { ...existingKorian };
       delete rest.servers;
       if (Object.keys(rest).length > 0) {
-        file._claudian = rest;
+        file._korian = rest;
       } else {
-        delete file._claudian;
+        delete file._korian;
       }
     } else {
-      delete file._claudian;
+      delete file._korian;
     }
 
     const content = JSON.stringify(file, null, 2);

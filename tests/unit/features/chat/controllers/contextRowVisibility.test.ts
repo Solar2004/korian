@@ -4,19 +4,19 @@ import { updateContextRowHasContent } from '@/features/chat/controllers/contextR
 
 function createContextRow(browserIndicator: HTMLElement | null): HTMLElement {
   const editorIndicator = createMockEl();
-  editorIndicator.addClass('claudian-selection-indicator claudian-hidden');
+  editorIndicator.addClass('korian-selection-indicator korian-hidden');
   const canvasIndicator = createMockEl();
-  canvasIndicator.addClass('claudian-canvas-indicator claudian-hidden');
+  canvasIndicator.addClass('korian-canvas-indicator korian-hidden');
   const fileIndicator = createMockEl();
-  fileIndicator.addClass('claudian-file-indicator claudian-hidden');
+  fileIndicator.addClass('korian-file-indicator korian-hidden');
   const imagePreview = createMockEl();
-  imagePreview.addClass('claudian-image-preview claudian-hidden');
+  imagePreview.addClass('korian-image-preview korian-hidden');
   const lookup = new Map<string, unknown>([
-    ['.claudian-selection-indicator', editorIndicator],
-    ['.claudian-browser-selection-indicator', browserIndicator],
-    ['.claudian-canvas-indicator', canvasIndicator],
-    ['.claudian-file-indicator', fileIndicator],
-    ['.claudian-image-preview', imagePreview],
+    ['.korian-selection-indicator', editorIndicator],
+    ['.korian-browser-selection-indicator', browserIndicator],
+    ['.korian-canvas-indicator', canvasIndicator],
+    ['.korian-file-indicator', fileIndicator],
+    ['.korian-image-preview', imagePreview],
   ]);
 
   const contextRow = createMockEl();
@@ -36,7 +36,7 @@ describe('updateContextRowHasContent', () => {
 
   it('treats browser indicator as visible only when it is not hidden', () => {
     const browserIndicator = createMockEl();
-    browserIndicator.addClass('claudian-browser-selection-indicator');
+    browserIndicator.addClass('korian-browser-selection-indicator');
     const contextRowEl = createContextRow(browserIndicator);
 
     updateContextRowHasContent(contextRowEl);

@@ -68,30 +68,30 @@ export interface MockElement {
 }
 
 const CLASS_DISPLAY: Record<string, string> = {
-  'claudian-browser-selection-indicator': 'block',
-  'claudian-canvas-indicator': 'block',
-  'claudian-context-meter': 'flex',
-  'claudian-file-indicator': 'none',
-  'claudian-image-preview': 'none',
-  'claudian-mcp-selector': 'flex',
-  'claudian-mode-selector': 'flex',
-  'claudian-permission-toggle': 'flex',
-  'claudian-selection-indicator': 'block',
-  'claudian-service-tier-toggle': 'flex',
-  'claudian-status-panel-bash': 'block',
-  'claudian-status-panel-bash-content': 'block',
-  'claudian-status-panel-bash-entry-content': 'block',
-  'claudian-status-panel-content': 'block',
-  'claudian-status-panel-todos': 'block',
-  'claudian-tab-content': 'flex',
-  'claudian-thinking-budget': 'flex',
-  'claudian-thinking-effort': 'flex',
+  'korian-browser-selection-indicator': 'block',
+  'korian-canvas-indicator': 'block',
+  'korian-context-meter': 'flex',
+  'korian-file-indicator': 'none',
+  'korian-image-preview': 'none',
+  'korian-mcp-selector': 'flex',
+  'korian-mode-selector': 'flex',
+  'korian-permission-toggle': 'flex',
+  'korian-selection-indicator': 'block',
+  'korian-service-tier-toggle': 'flex',
+  'korian-status-panel-bash': 'block',
+  'korian-status-panel-bash-content': 'block',
+  'korian-status-panel-bash-entry-content': 'block',
+  'korian-status-panel-content': 'block',
+  'korian-status-panel-todos': 'block',
+  'korian-tab-content': 'flex',
+  'korian-thinking-budget': 'flex',
+  'korian-thinking-effort': 'flex',
 };
 
 const DISPLAY_CLASSES = new Set([
-  'claudian-hidden',
-  'claudian-visible-block',
-  'claudian-visible-flex',
+  'korian-hidden',
+  'korian-visible-block',
+  'korian-visible-flex',
   ...Object.keys(CLASS_DISPLAY),
 ]);
 
@@ -105,9 +105,9 @@ export function createMockEl(tag = 'div'): any {
   let textContent = '';
 
   const resolveDisplay = (): string | null => {
-    if (classes.has('claudian-hidden')) return 'none';
-    if (classes.has('claudian-visible-flex')) return 'flex';
-    if (classes.has('claudian-visible-block')) return 'block';
+    if (classes.has('korian-hidden')) return 'none';
+    if (classes.has('korian-visible-flex')) return 'flex';
+    if (classes.has('korian-visible-block')) return 'block';
 
     for (const [cls, display] of Object.entries(CLASS_DISPLAY)) {
       if (classes.has(cls)) return display;

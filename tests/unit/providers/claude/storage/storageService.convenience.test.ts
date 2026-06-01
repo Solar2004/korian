@@ -69,7 +69,7 @@ describe('StorageService convenience methods', () => {
     },
   });
 
-  const claudianSettingsJson = JSON.stringify({
+  const korianSettingsJson = JSON.stringify({
     userName: 'Test',
     model: 'haiku',
     permissionMode: 'yolo',
@@ -171,69 +171,69 @@ describe('StorageService convenience methods', () => {
     });
   });
 
-  describe('updateClaudianSettings', () => {
-    it('updates partial claudian settings', async () => {
+  describe('updateKorianSettings', () => {
+    it('updates partial korian settings', async () => {
       const { plugin, files } = createMockPlugin({
         initialFiles: {
-          '.claudian/claudian-settings.json': claudianSettingsJson,
+          '.korian/korian-settings.json': korianSettingsJson,
         },
       });
       const storage = new StorageService(plugin);
       await storage.initialize();
 
-      await storage.updateClaudianSettings({ userName: 'NewUser' });
+      await storage.updateKorianSettings({ userName: 'NewUser' });
 
-      const saved = JSON.parse(files.get('.claudian/claudian-settings.json')!) as Record<string, unknown>;
+      const saved = JSON.parse(files.get('.korian/korian-settings.json')!) as Record<string, unknown>;
       expect(saved.userName).toBe('NewUser');
     });
   });
 
-  describe('saveClaudianSettings', () => {
-    it('saves full claudian settings', async () => {
+  describe('saveKorianSettings', () => {
+    it('saves full korian settings', async () => {
       const { plugin, files } = createMockPlugin({
         initialFiles: {
-          '.claudian/claudian-settings.json': claudianSettingsJson,
+          '.korian/korian-settings.json': korianSettingsJson,
         },
       });
       const storage = new StorageService(plugin);
       await storage.initialize();
 
-      const existing = await storage.loadClaudianSettings();
+      const existing = await storage.loadKorianSettings();
       existing.userName = 'FullSave';
-      await storage.saveClaudianSettings(existing);
+      await storage.saveKorianSettings(existing);
 
-      const saved = JSON.parse(files.get('.claudian/claudian-settings.json')!) as Record<string, unknown>;
+      const saved = JSON.parse(files.get('.korian/korian-settings.json')!) as Record<string, unknown>;
       expect(saved.userName).toBe('FullSave');
     });
   });
 
-  describe('loadClaudianSettings', () => {
-    it('loads claudian settings', async () => {
+  describe('loadKorianSettings', () => {
+    it('loads korian settings', async () => {
       const { plugin } = createMockPlugin({
         initialFiles: {
-          '.claudian/claudian-settings.json': claudianSettingsJson,
+          '.korian/korian-settings.json': korianSettingsJson,
         },
       });
       const storage = new StorageService(plugin);
       await storage.initialize();
 
-      const settings = await storage.loadClaudianSettings();
+      const settings = await storage.loadKorianSettings();
       expect(settings.userName).toBe('Test');
       expect(settings.model).toBe('haiku');
     });
 
-    it('migrates legacy settings into .claudian during initialization', async () => {
+    it('migrates legacy settings into .korian during initialization', async () => {
       const { plugin, files } = createMockPlugin({
         initialFiles: {
-          '.claude/claudian-settings.json': claudianSettingsJson,
+          '.claude/korian-settings.json': korianSettingsJson,
         },
       });
       const storage = new StorageService(plugin);
 
       await storage.initialize();
 
-      expect(files.get('.claudian/claudian-settings.json')).toBeDefined();
-      expect(files.has('.claude/claudian-settings.json')).toBe(false);
+      expect(files.get('.korian/korian-settings.json')).toBeDefined();
+      expect(files.has('.claude/korian-settings.json')).toBe(false);
     });
   });
 

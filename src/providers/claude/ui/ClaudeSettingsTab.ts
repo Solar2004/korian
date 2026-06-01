@@ -58,7 +58,7 @@ export const claudeSettingsTabRenderer: ProviderSettingsTabRenderer = {
       .setDesc(cliPathDescription);
 
     const validationEl = container.createDiv({
-      cls: 'claudian-cli-path-validation claudian-setting-validation claudian-setting-validation-error claudian-hidden',
+      cls: 'korian-cli-path-validation korian-setting-validation korian-setting-validation-error korian-hidden',
     });
 
     const validatePath = (value: string): string | null => {
@@ -81,16 +81,16 @@ export const claudeSettingsTabRenderer: ProviderSettingsTabRenderer = {
       const error = validatePath(value);
       if (error) {
         validationEl.setText(error);
-        validationEl.toggleClass('claudian-hidden', false);
+        validationEl.toggleClass('korian-hidden', false);
         if (inputEl) {
-          inputEl.toggleClass('claudian-input-error', true);
+          inputEl.toggleClass('korian-input-error', true);
         }
         return false;
       }
 
-      validationEl.toggleClass('claudian-hidden', true);
+      validationEl.toggleClass('korian-hidden', true);
       if (inputEl) {
-        inputEl.toggleClass('claudian-input-error', false);
+        inputEl.toggleClass('korian-input-error', false);
       }
       return true;
     };
@@ -133,7 +133,7 @@ export const claudeSettingsTabRenderer: ProviderSettingsTabRenderer = {
         .onChange(async (value) => {
           await persistCliPath(value);
         });
-      text.inputEl.addClass('claudian-settings-cli-path-input');
+      text.inputEl.addClass('korian-settings-cli-path-input');
       cliPathInputEl = text.inputEl;
 
       updateCliPathValidation(currentValue, text.inputEl);
@@ -260,7 +260,7 @@ export const claudeSettingsTabRenderer: ProviderSettingsTabRenderer = {
 
     new Setting(container).setName(t('settings.slashCommands.name')).setHeading();
 
-    const slashCommandsDesc = container.createDiv({ cls: 'claudian-sp-settings-desc' });
+    const slashCommandsDesc = container.createDiv({ cls: 'korian-sp-settings-desc' });
     const descP = slashCommandsDesc.createEl('p', { cls: 'setting-item-description' });
     descP.appendText(t('settings.slashCommands.desc') + ' ');
     descP.createEl('a', {
@@ -268,7 +268,7 @@ export const claudeSettingsTabRenderer: ProviderSettingsTabRenderer = {
       href: 'https://code.claude.com/docs/en/skills',
     });
 
-    const slashCommandsContainer = container.createDiv({ cls: 'claudian-slash-commands-container' });
+    const slashCommandsContainer = container.createDiv({ cls: 'korian-slash-commands-container' });
     new SlashCommandSettings(
       slashCommandsContainer,
       context.plugin.app,
@@ -285,13 +285,13 @@ export const claudeSettingsTabRenderer: ProviderSettingsTabRenderer = {
 
     new Setting(container).setName(t('settings.subagents.name')).setHeading();
 
-    const agentsDesc = container.createDiv({ cls: 'claudian-sp-settings-desc' });
+    const agentsDesc = container.createDiv({ cls: 'korian-sp-settings-desc' });
     agentsDesc.createEl('p', {
       text: t('settings.subagents.desc'),
       cls: 'setting-item-description',
     });
 
-    const agentsContainer = container.createDiv({ cls: 'claudian-agents-container' });
+    const agentsContainer = container.createDiv({ cls: 'korian-agents-container' });
     new AgentSettings(agentsContainer, {
       app: context.plugin.app,
       agentManager: claudeWorkspace.agentManager,
@@ -302,13 +302,13 @@ export const claudeSettingsTabRenderer: ProviderSettingsTabRenderer = {
 
     new Setting(container).setName(t('settings.mcpServers.name')).setHeading();
 
-    const mcpDesc = container.createDiv({ cls: 'claudian-mcp-settings-desc' });
+    const mcpDesc = container.createDiv({ cls: 'korian-mcp-settings-desc' });
     mcpDesc.createEl('p', {
       text: t('settings.mcpServers.desc'),
       cls: 'setting-item-description',
     });
 
-    const mcpContainer = container.createDiv({ cls: 'claudian-mcp-container' });
+    const mcpContainer = container.createDiv({ cls: 'korian-mcp-container' });
     new McpSettingsManager(mcpContainer, {
       app: context.plugin.app,
       mcpStorage: claudeWorkspace.mcpStorage,
@@ -325,13 +325,13 @@ export const claudeSettingsTabRenderer: ProviderSettingsTabRenderer = {
 
     new Setting(container).setName(t('settings.plugins.name')).setHeading();
 
-    const pluginsDesc = container.createDiv({ cls: 'claudian-plugin-settings-desc' });
+    const pluginsDesc = container.createDiv({ cls: 'korian-plugin-settings-desc' });
     pluginsDesc.createEl('p', {
       text: t('settings.plugins.desc'),
       cls: 'setting-item-description',
     });
 
-    const pluginsContainer = container.createDiv({ cls: 'claudian-plugins-container' });
+    const pluginsContainer = container.createDiv({ cls: 'korian-plugins-container' });
     new PluginSettingsManager(pluginsContainer, {
       pluginManager: claudeWorkspace.pluginManager,
       agentManager: claudeWorkspace.agentManager,
@@ -384,13 +384,13 @@ export const claudeSettingsTabRenderer: ProviderSettingsTabRenderer = {
         toggle
           .setValue(claudeSettings.enableBangBash)
           .onChange(async (value) => {
-            bangBashValidationEl.toggleClass('claudian-hidden', true);
+            bangBashValidationEl.toggleClass('korian-hidden', true);
             if (value) {
               const { findNodeExecutable, getEnhancedPath } = await import('../../../utils/env');
               const nodePath = findNodeExecutable(getEnhancedPath());
               if (!nodePath) {
                 bangBashValidationEl.setText(t('settings.enableBangBash.validation.noNode'));
-                bangBashValidationEl.toggleClass('claudian-hidden', false);
+                bangBashValidationEl.toggleClass('korian-hidden', false);
                 toggle.setValue(false);
                 return;
               }
@@ -401,7 +401,7 @@ export const claudeSettingsTabRenderer: ProviderSettingsTabRenderer = {
       );
 
     const bangBashValidationEl = container.createDiv({
-      cls: 'claudian-bang-bash-validation claudian-setting-validation claudian-setting-validation-error claudian-hidden',
+      cls: 'korian-bang-bash-validation korian-setting-validation korian-setting-validation-error korian-hidden',
     });
   },
 };

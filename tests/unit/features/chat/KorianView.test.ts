@@ -1,7 +1,7 @@
 import { createMockEl } from '@test/helpers/mockElement';
 import { Platform, Scope } from 'obsidian';
 
-import { ClaudianView } from '@/features/chat/ClaudianView';
+import { KorianView } from '@/features/chat/KorianView';
 
 const MockScope = Scope as typeof Scope & { instances: Scope[] };
 
@@ -14,7 +14,7 @@ function createViewHarness(options: {
   view: any;
 } {
   const newTabButtonEl = createMockEl();
-  const view = Object.create(ClaudianView.prototype) as any;
+  const view = Object.create(KorianView.prototype) as any;
 
   view.plugin = {
     settings: {
@@ -33,32 +33,32 @@ function createViewHarness(options: {
   return { newTabButtonEl, view };
 }
 
-describe('ClaudianView tab controls', () => {
+describe('KorianView tab controls', () => {
   it('hides the new-tab button when the tab manager is at capacity', () => {
     const { newTabButtonEl, view } = createViewHarness({ canCreateTab: false });
 
     view.refreshTabControls();
 
-    expect(newTabButtonEl.hasClass('claudian-hidden')).toBe(true);
+    expect(newTabButtonEl.hasClass('korian-hidden')).toBe(true);
     expect(newTabButtonEl.getAttribute('aria-disabled')).toBe('true');
     expect(newTabButtonEl.getAttribute('aria-hidden')).toBe('true');
   });
 
   it('shows the new-tab button when another tab can be created', () => {
     const { newTabButtonEl, view } = createViewHarness({ canCreateTab: true });
-    newTabButtonEl.addClass('claudian-hidden');
+    newTabButtonEl.addClass('korian-hidden');
     newTabButtonEl.setAttribute('aria-disabled', 'true');
     newTabButtonEl.setAttribute('aria-hidden', 'true');
 
     view.refreshTabControls();
 
-    expect(newTabButtonEl.hasClass('claudian-hidden')).toBe(false);
+    expect(newTabButtonEl.hasClass('korian-hidden')).toBe(false);
     expect(newTabButtonEl.getAttribute('aria-disabled')).toBeNull();
     expect(newTabButtonEl.getAttribute('aria-hidden')).toBeNull();
   });
 });
 
-describe('ClaudianView Escape handling', () => {
+describe('KorianView Escape handling', () => {
   beforeEach(() => {
     MockScope.instances.length = 0;
   });
@@ -73,7 +73,7 @@ describe('ClaudianView Escape handling', () => {
     const cancelStreaming = jest.fn();
     const eventRefs: unknown[] = [];
     const parentScope = new Scope();
-    const view = Object.create(ClaudianView.prototype) as any;
+    const view = Object.create(KorianView.prototype) as any;
 
     view.app = { scope: parentScope };
     view.containerEl = createMockEl();
@@ -134,7 +134,7 @@ describe('ClaudianView Escape handling', () => {
     });
     const eventRefs: unknown[] = [];
     const parentScope = new Scope();
-    const view = Object.create(ClaudianView.prototype) as any;
+    const view = Object.create(KorianView.prototype) as any;
 
     view.app = { scope: parentScope };
     view.containerEl = createMockEl();

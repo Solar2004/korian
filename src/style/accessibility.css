@@ -1,39 +1,39 @@
 /* Accessibility - Focus Visible Styles */
 
 /* outline + offset + border-radius */
-.claudian-tool-header:focus-visible,
-.claudian-thinking-header:focus-visible,
-.claudian-subagent-header:focus-visible,
-.claudian-header-btn:focus-visible,
-.claudian-model-btn:focus-visible,
-.claudian-thinking-current:focus-visible {
+.korian-tool-header:focus-visible,
+.korian-thinking-header:focus-visible,
+.korian-subagent-header:focus-visible,
+.korian-header-btn:focus-visible,
+.korian-model-btn:focus-visible,
+.korian-thinking-current:focus-visible {
   outline: 2px solid var(--interactive-accent);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
 /* outline + offset only */
-.claudian-action-btn:focus-visible,
-.claudian-toggle-switch:focus-visible,
-.claudian-file-chip:focus-visible,
-.claudian-image-chip:focus-visible,
-.claudian-file-chip-remove:focus-visible,
-.claudian-image-remove:focus-visible,
-.claudian-image-modal-close:focus-visible,
-.claudian-approved-remove-btn:focus-visible,
-.claudian-save-env-btn:focus-visible,
-.claudian-restore-snippet-btn:focus-visible,
-.claudian-edit-snippet-btn:focus-visible,
-.claudian-delete-snippet-btn:focus-visible,
-.claudian-cancel-btn:focus-visible,
-.claudian-save-btn:focus-visible,
-.claudian-code-lang-label:focus-visible {
+.korian-action-btn:focus-visible,
+.korian-toggle-switch:focus-visible,
+.korian-file-chip:focus-visible,
+.korian-image-chip:focus-visible,
+.korian-file-chip-remove:focus-visible,
+.korian-image-remove:focus-visible,
+.korian-image-modal-close:focus-visible,
+.korian-approved-remove-btn:focus-visible,
+.korian-save-env-btn:focus-visible,
+.korian-restore-snippet-btn:focus-visible,
+.korian-edit-snippet-btn:focus-visible,
+.korian-delete-snippet-btn:focus-visible,
+.korian-cancel-btn:focus-visible,
+.korian-save-btn:focus-visible,
+.korian-code-lang-label:focus-visible {
   outline: 2px solid var(--interactive-accent);
   outline-offset: 2px;
 }
 
 /* outline + negative offset + border-radius */
-.claudian-history-item-content:focus-visible {
+.korian-history-item-content:focus-visible {
   outline: 2px solid var(--interactive-accent);
   outline-offset: -2px;
   border-radius: 4px;

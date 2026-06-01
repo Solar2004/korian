@@ -1,15 +1,15 @@
 export function updateContextRowHasContent(contextRowEl: HTMLElement): void {
-  const editorIndicator = contextRowEl.querySelector('.claudian-selection-indicator');
-  const browserIndicator = contextRowEl.querySelector('.claudian-browser-selection-indicator');
-  const canvasIndicator = contextRowEl.querySelector('.claudian-canvas-indicator');
-  const fileIndicator = contextRowEl.querySelector('.claudian-file-indicator');
-  const imagePreview = contextRowEl.querySelector('.claudian-image-preview');
+  const editorIndicator = contextRowEl.querySelector('.korian-selection-indicator');
+  const browserIndicator = contextRowEl.querySelector('.korian-browser-selection-indicator');
+  const canvasIndicator = contextRowEl.querySelector('.korian-canvas-indicator');
+  const fileIndicator = contextRowEl.querySelector('.korian-file-indicator');
+  const imagePreview = contextRowEl.querySelector('.korian-image-preview');
 
-  const hasEditorSelection = !!editorIndicator && !editorIndicator.hasClass('claudian-hidden');
-  const hasBrowserSelection = !!browserIndicator && !browserIndicator.hasClass('claudian-hidden');
-  const hasCanvasSelection = !!canvasIndicator && !canvasIndicator.hasClass('claudian-hidden');
-  const hasFileChips = !!fileIndicator && fileIndicator.hasClass('claudian-visible-flex');
-  const hasImageChips = !!imagePreview && imagePreview.hasClass('claudian-visible-flex');
+  const hasEditorSelection = !!editorIndicator && !editorIndicator.hasClass('korian-hidden');
+  const hasBrowserSelection = !!browserIndicator && !browserIndicator.hasClass('korian-hidden');
+  const hasCanvasSelection = !!canvasIndicator && !canvasIndicator.hasClass('korian-hidden');
+  const hasFileChips = !!fileIndicator && fileIndicator.hasClass('korian-visible-flex');
+  const hasImageChips = !!imagePreview && imagePreview.hasClass('korian-visible-flex');
 
   contextRowEl.classList.toggle(
     'has-content',

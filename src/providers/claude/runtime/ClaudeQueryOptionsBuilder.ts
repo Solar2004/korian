@@ -11,7 +11,7 @@ import {
   type SystemPromptSettings,
 } from '../../../core/prompt/mainAgent';
 import type { AppPluginManager } from '../../../core/providers/types';
-import type { ClaudianSettings, PermissionMode } from '../../../core/types/settings';
+import type { KorianSettings, PermissionMode } from '../../../core/types/settings';
 import {
   type ClaudeSafeMode,
   getClaudeProviderSettings,
@@ -30,7 +30,7 @@ import {
 export interface QueryOptionsContext {
   vaultPath: string;
   cliPath: string;
-  settings: ClaudianSettings;
+  settings: KorianSettings;
   customEnv: Record<string, string>;
   enhancedPath: string;
   mcpManager: McpServerManager;
@@ -76,7 +76,7 @@ export class QueryOptionsBuilder {
     if (currentConfig.settingSources !== newConfig.settingSources) return true;
     if (currentConfig.claudeCliPath !== newConfig.claudeCliPath) return true;
 
-    // Note: Permission mode is handled dynamically via setPermissionMode() in ClaudianService.
+    // Note: Permission mode is handled dynamically via setPermissionMode() in KorianService.
     // Since allowDangerouslySkipPermissions is always true, both directions work without restart.
 
     if (currentConfig.enableChrome !== newConfig.enableChrome) return true;
@@ -293,7 +293,7 @@ export class QueryOptionsBuilder {
 
   private static applyThinking(
     options: Options,
-    settings: ClaudianSettings,
+    settings: KorianSettings,
     model: string
   ): void {
     const effortLevel = resolveEffortLevel(model, settings.effortLevel);

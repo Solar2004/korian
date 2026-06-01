@@ -38,7 +38,7 @@ export const piSettingsTabRenderer: ProviderSettingsTabRenderer = {
       );
 
     const validationEl = container.createDiv({
-      cls: 'claudian-cli-path-validation claudian-setting-validation claudian-setting-validation-error claudian-hidden',
+      cls: 'korian-cli-path-validation korian-setting-validation korian-setting-validation-error korian-hidden',
     });
     const cliPathsByHost = { ...piSettings.cliPathsByHost };
     let cliPathInputEl: HTMLInputElement | null = null;
@@ -47,13 +47,13 @@ export const piSettingsTabRenderer: ProviderSettingsTabRenderer = {
       const error = validateCliPath(value);
       if (error) {
         validationEl.setText(error);
-        validationEl.toggleClass('claudian-hidden', false);
-        inputEl?.toggleClass('claudian-input-error', true);
+        validationEl.toggleClass('korian-hidden', false);
+        inputEl?.toggleClass('korian-input-error', true);
         return false;
       }
 
-      validationEl.toggleClass('claudian-hidden', true);
-      inputEl?.toggleClass('claudian-input-error', false);
+      validationEl.toggleClass('korian-hidden', true);
+      inputEl?.toggleClass('korian-input-error', false);
       return true;
     };
 
@@ -97,7 +97,7 @@ export const piSettingsTabRenderer: ProviderSettingsTabRenderer = {
 
     new Setting(container).setName('Models').setHeading();
 
-    const modelContainer = container.createDiv({ cls: 'claudian-pi-models' });
+    const modelContainer = container.createDiv({ cls: 'korian-pi-models' });
     const renderModels = (): void => {
       modelContainer.empty();
       const current = getPiProviderSettings(settingsBag);

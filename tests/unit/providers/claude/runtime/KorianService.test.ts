@@ -4,8 +4,8 @@ import * as sdkModule from '@anthropic-ai/claude-agent-sdk';
 import { Notice } from 'obsidian';
 
 import type { McpServerManager } from '@/core/mcp/McpServerManager';
-import type ClaudianPlugin from '@/main';
-import { ClaudianService } from '@/providers/claude/runtime/ClaudeChatRuntime';
+import type KorianPlugin from '@/main';
+import { KorianService } from '@/providers/claude/runtime/ClaudeChatRuntime';
 import { MessageChannel } from '@/providers/claude/runtime/ClaudeMessageChannel';
 import { createResponseHandler } from '@/providers/claude/runtime/types';
 import * as envUtils from '@/utils/env';
@@ -20,10 +20,10 @@ const sdkMock = sdkModule as unknown as {
 
 type MockMcpServerManager = jest.Mocked<McpServerManager>;
 
-describe('ClaudianService', () => {
-  let mockPlugin: Partial<ClaudianPlugin>;
+describe('KorianService', () => {
+  let mockPlugin: Partial<KorianPlugin>;
   let mockMcpManager: MockMcpServerManager;
-  let service: ClaudianService;
+  let service: KorianService;
 
   async function collectChunks(gen: AsyncGenerator<any>): Promise<any[]> {
     const chunks: any[] = [];
@@ -51,7 +51,7 @@ describe('ClaudianService', () => {
         model: 'claude-3-5-sonnet',
         permissionMode: 'ask' as const,
         thinkingBudget: 0,
-        mediaFolder: 'claudian-media',
+        mediaFolder: 'korian-media',
         systemPrompt: '',
         loadUserClaudeSettings: false,
         claudeCliPath: '/usr/local/bin/claude',
@@ -64,7 +64,7 @@ describe('ClaudianService', () => {
       pluginManager: {
         getPluginsKey: jest.fn().mockReturnValue(''),
       },
-    } as unknown as ClaudianPlugin;
+    } as unknown as KorianPlugin;
 
     mockMcpManager = {
       loadServers: jest.fn().mockResolvedValue(undefined),
@@ -75,7 +75,7 @@ describe('ClaudianService', () => {
       transformMentions: jest.fn().mockImplementation((text: string) => text),
     } as unknown as MockMcpServerManager;
 
-    service = new ClaudianService(mockPlugin as ClaudianPlugin, mockMcpManager);
+    service = new KorianService(mockPlugin as KorianPlugin, mockMcpManager);
   });
 
   describe('prepareTurn', () => {

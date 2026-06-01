@@ -39,8 +39,8 @@ export class ImageContextManager {
     this.callbacks = callbacks;
 
     // Create image preview in previewContainerEl, before file indicator if present
-    const fileIndicator = this.previewContainerEl.querySelector('.claudian-file-indicator');
-    this.imagePreviewEl = this.previewContainerEl.createDiv({ cls: 'claudian-image-preview' });
+    const fileIndicator = this.previewContainerEl.querySelector('.korian-file-indicator');
+    this.imagePreviewEl = this.previewContainerEl.createDiv({ cls: 'korian-image-preview' });
     if (fileIndicator && fileIndicator.parentElement === this.previewContainerEl) {
       this.previewContainerEl.insertBefore(this.imagePreviewEl, fileIndicator);
     }
@@ -81,11 +81,11 @@ export class ImageContextManager {
   }
 
   private setupDragAndDrop() {
-    const inputWrapper = this.containerEl.querySelector('.claudian-input-wrapper') as HTMLElement;
+    const inputWrapper = this.containerEl.querySelector('.korian-input-wrapper') as HTMLElement;
     if (!inputWrapper) return;
 
-    this.dropOverlay = inputWrapper.createDiv({ cls: 'claudian-drop-overlay' });
-    const dropContent = this.dropOverlay.createDiv({ cls: 'claudian-drop-content' });
+    this.dropOverlay = inputWrapper.createDiv({ cls: 'korian-drop-overlay' });
+    const dropContent = this.dropOverlay.createDiv({ cls: 'korian-drop-content' });
     const ownerDocument = inputWrapper.ownerDocument ?? window.document;
     const svg = ownerDocument.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('viewBox', '0 0 24 24');
@@ -137,7 +137,7 @@ export class ImageContextManager {
     e.preventDefault();
     e.stopPropagation();
 
-    const inputWrapper = this.containerEl.querySelector('.claudian-input-wrapper');
+    const inputWrapper = this.containerEl.querySelector('.korian-input-wrapper');
     if (!inputWrapper) {
       this.dropOverlay?.removeClass('visible');
       return;
@@ -253,13 +253,13 @@ export class ImageContextManager {
     this.imagePreviewEl.empty();
 
     if (this.attachedImages.size === 0) {
-      this.imagePreviewEl.removeClass('claudian-visible-flex');
-      this.imagePreviewEl.addClass('claudian-hidden');
+      this.imagePreviewEl.removeClass('korian-visible-flex');
+      this.imagePreviewEl.addClass('korian-hidden');
       return;
     }
 
-    this.imagePreviewEl.addClass('claudian-visible-flex');
-    this.imagePreviewEl.removeClass('claudian-hidden');
+    this.imagePreviewEl.addClass('korian-visible-flex');
+    this.imagePreviewEl.removeClass('korian-hidden');
 
     for (const [id, image] of this.attachedImages) {
       this.renderImagePreview(id, image);
@@ -267,9 +267,9 @@ export class ImageContextManager {
   }
 
   private renderImagePreview(id: string, image: ImageAttachment) {
-    const previewEl = this.imagePreviewEl.createDiv({ cls: 'claudian-image-chip' });
+    const previewEl = this.imagePreviewEl.createDiv({ cls: 'korian-image-chip' });
 
-    const thumbEl = previewEl.createDiv({ cls: 'claudian-image-thumb' });
+    const thumbEl = previewEl.createDiv({ cls: 'korian-image-thumb' });
     thumbEl.createEl('img', {
       attr: {
         src: `data:${image.mediaType};base64,${image.data}`,
@@ -277,15 +277,15 @@ export class ImageContextManager {
       },
     });
 
-    const infoEl = previewEl.createDiv({ cls: 'claudian-image-info' });
-    const nameEl = infoEl.createSpan({ cls: 'claudian-image-name' });
+    const infoEl = previewEl.createDiv({ cls: 'korian-image-info' });
+    const nameEl = infoEl.createSpan({ cls: 'korian-image-name' });
     nameEl.setText(this.truncateName(image.name, 20));
     nameEl.setAttribute('title', image.name);
 
-    const sizeEl = infoEl.createSpan({ cls: 'claudian-image-size' });
+    const sizeEl = infoEl.createSpan({ cls: 'korian-image-size' });
     sizeEl.setText(this.formatSize(image.size));
 
-    const removeEl = previewEl.createSpan({ cls: 'claudian-image-remove' });
+    const removeEl = previewEl.createSpan({ cls: 'korian-image-remove' });
     removeEl.setText('\u00D7');
     removeEl.setAttribute('aria-label', 'Remove image');
 
@@ -303,8 +303,8 @@ export class ImageContextManager {
 
   private showFullImage(image: ImageAttachment) {
     const ownerDocument = this.containerEl.ownerDocument ?? window.document;
-    const overlay = ownerDocument.body.createDiv({ cls: 'claudian-image-modal-overlay' });
-    const modal = overlay.createDiv({ cls: 'claudian-image-modal' });
+    const overlay = ownerDocument.body.createDiv({ cls: 'korian-image-modal-overlay' });
+    const modal = overlay.createDiv({ cls: 'korian-image-modal' });
 
     modal.createEl('img', {
       attr: {
@@ -313,7 +313,7 @@ export class ImageContextManager {
       },
     });
 
-    const closeBtn = modal.createDiv({ cls: 'claudian-image-modal-close' });
+    const closeBtn = modal.createDiv({ cls: 'korian-image-modal-close' });
     closeBtn.setText('\u00D7');
 
     const handleEsc = (e: KeyboardEvent) => {

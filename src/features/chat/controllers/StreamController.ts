@@ -24,7 +24,7 @@ import {
 import { extractToolResultContent } from '../../../core/tools/toolResultContent';
 import type { ChatMessage, StreamChunk, SubagentInfo, ToolCallInfo } from '../../../core/types';
 import type { SDKToolUseResult } from '../../../core/types/diff';
-import type ClaudianPlugin from '../../../main';
+import type KorianPlugin from '../../../main';
 import {
   cancelScheduledAnimationFrame,
   scheduleAnimationFrame,
@@ -63,7 +63,7 @@ import type { ChatState } from '../state/ChatState';
 import type { FileContextManager } from '../ui/FileContext';
 
 export interface StreamControllerDeps {
-  plugin: ClaudianPlugin;
+  plugin: KorianPlugin;
   state: ChatState;
   renderer: MessageRenderer;
   subagentManager: SubagentManager;
@@ -281,13 +281,13 @@ export class StreamController {
         // If already rendered, update the header name + summary
         const toolEl = state.toolCallElements.get(chunk.id);
         if (toolEl) {
-          const nameEl = toolEl.querySelector('.claudian-tool-name')
-            ?? toolEl.querySelector('.claudian-write-edit-name');
+          const nameEl = toolEl.querySelector('.korian-tool-name')
+            ?? toolEl.querySelector('.korian-write-edit-name');
           if (nameEl) {
             nameEl.setText(getToolName(existingToolCall.name, existingToolCall.input));
           }
-          const summaryEl = toolEl.querySelector('.claudian-tool-summary')
-            ?? toolEl.querySelector('.claudian-write-edit-summary');
+          const summaryEl = toolEl.querySelector('.korian-tool-summary')
+            ?? toolEl.querySelector('.korian-write-edit-summary');
           if (summaryEl) {
             summaryEl.setText(getToolSummary(existingToolCall.name, existingToolCall.input));
           }
@@ -664,7 +664,7 @@ export class StreamController {
     this.hideThinkingIndicator();
 
     if (!state.currentTextEl) {
-      state.currentTextEl = state.currentContentEl.createDiv({ cls: 'claudian-text-block' });
+      state.currentTextEl = state.currentContentEl.createDiv({ cls: 'korian-text-block' });
       state.currentTextContent = '';
     }
 
@@ -1364,14 +1364,14 @@ export class StreamController {
       if (!state.currentContentEl || state.thinkingEl || state.currentThinkingState) return;
 
       const cls = overrideCls
-        ? `claudian-thinking ${overrideCls}`
-        : 'claudian-thinking';
+        ? `korian-thinking ${overrideCls}`
+        : 'korian-thinking';
       state.thinkingEl = state.currentContentEl.createDiv({ cls });
       const text = overrideText || FLAVOR_TEXTS[Math.floor(Math.random() * FLAVOR_TEXTS.length)];
       state.thinkingEl.createSpan({ text });
 
       // Create timer span with initial value
-      const timerSpan = state.thinkingEl.createSpan({ cls: 'claudian-thinking-hint' });
+      const timerSpan = state.thinkingEl.createSpan({ cls: 'korian-thinking-hint' });
       const updateTimer = () => {
         if (!state.responseStartTime) return;
         // Check if element is still connected to DOM (prevents orphaned interval updates)
@@ -1423,8 +1423,8 @@ export class StreamController {
     const { state } = this.deps;
     if (!state.currentContentEl) return;
     this.hideThinkingIndicator();
-    const el = state.currentContentEl.createDiv({ cls: 'claudian-compact-boundary' });
-    el.createSpan({ cls: 'claudian-compact-boundary-label', text: 'Conversation compacted' });
+    const el = state.currentContentEl.createDiv({ cls: 'korian-compact-boundary' });
+    el.createSpan({ cls: 'korian-compact-boundary-label', text: 'Conversation compacted' });
   }
 
   // ============================================

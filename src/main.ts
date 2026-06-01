@@ -7,7 +7,7 @@ import './providers';
 import type { Editor, WorkspaceLeaf } from 'obsidian';
 import { MarkdownView, Notice, Plugin } from 'obsidian';
 
-import { DEFAULT_CLAUDIAN_SETTINGS } from './app/settings/defaultSettings';
+import { DEFAULT_KORIAN_SETTINGS } from './app/settings/defaultSettings';
 import { SharedStorageService } from './app/storage/SharedStorageService';
 import type { SharedAppStorage } from './core/bootstrap/storage';
 import {
@@ -22,17 +22,17 @@ import type { ProviderId } from './core/providers/types';
 import type { AppTabManagerState } from './core/providers/types';
 import { DEFAULT_CHAT_PROVIDER_ID } from './core/providers/types';
 import type {
-  ClaudianSettings,
+  KorianSettings,
   Conversation,
   ConversationMeta,
 } from './core/types';
 import {
-  VIEW_TYPE_CLAUDIAN,
+  VIEW_TYPE_KORIAN,
 } from './core/types';
 import type { ChatViewPlacement, EnvironmentScope } from './core/types/settings';
-import { ClaudianView } from './features/chat/ClaudianView';
+import { KorianView } from './features/chat/KorianView';
 import { type InlineEditContext, InlineEditModal } from './features/inline-edit/ui/InlineEditModal';
-import { ClaudianSettingTab } from './features/settings/ClaudianSettings';
+import { KorianSettingTab } from './features/settings/KorianSettings';
 import { setLocale } from './i18n/i18n';
 import type { Locale } from './i18n/types';
 import { OPENCODE_PLAN_MODE_ID, OPENCODE_SAFE_MODE_ID } from './providers/opencode/modes';
@@ -40,14 +40,14 @@ import { buildCursorContext } from './utils/editor';
 import { revealWorkspaceLeaf } from './utils/obsidianCompat';
 import { getVaultPath } from './utils/path';
 
-function isClaudianView(value: unknown): value is ClaudianView {
+function isKorianView(value: unknown): value is KorianView {
   return !!value
     && typeof value === 'object'
     && typeof (value as { getTabManager?: unknown }).getTabManager === 'function';
 }
 
-export default class ClaudianPlugin extends Plugin {
-  settings!: ClaudianSettings;
+export default class KorianPlugin extends Plugin {
+  settings!: KorianSettings;
   storage!: SharedAppStorage;
   private conversations: Conversation[] = [];
   private lastKnownTabManagerState: AppTabManagerState | null = null;
@@ -57,11 +57,11 @@ export default class ClaudianPlugin extends Plugin {
     await ProviderWorkspaceRegistry.initializeAll(this);
 
     this.registerView(
-      VIEW_TYPE_CLAUDIAN,
-      (leaf) => new ClaudianView(leaf, this)
+      VIEW_TYPE_KORIAN,
+      (leaf) => new KorianView(leaf, this)
     );
 
-    this.addRibbonIcon('bot', 'Open Claudian', () => {
+    this.addRibbonIcon('bot', 'Open Korian', () => {
       void this.activateView();
     });
 
@@ -174,7 +174,7 @@ export default class ClaudianPlugin extends Plugin {
       },
     });
 
-    this.addSettingTab(new ClaudianSettingTab(this.app, this));
+    this.addSettingTab(new KorianSettingTab(this.app, this));
   }
 
   onunload(): void {
@@ -194,13 +194,13 @@ export default class ClaudianPlugin extends Plugin {
 
   async activateView() {
     const { workspace } = this.app;
-    let leaf = workspace.getLeavesOfType(VIEW_TYPE_CLAUDIAN)[0];
+    let leaf = workspace.getLeavesOfType(VIEW_TYPE_KORIAN)[0];
 
     if (!leaf) {
       const newLeaf = this.getLeafForPlacement(this.settings.chatViewPlacement);
       if (newLeaf) {
         await newLeaf.setViewState({
-          type: VIEW_TYPE_CLAUDIAN,
+          type: VIEW_TYPE_KORIAN,
           active: true,
         });
         leaf = newLeaf;
@@ -225,7 +225,7 @@ export default class ClaudianPlugin extends Plugin {
   }
 
   private canCreateNewTab(): boolean {
-    const hasClaudianLeaf = this.app.workspace.getLeavesOfType(VIEW_TYPE_CLAUDIAN).length > 0;
+    const hasKorianLeaf = this.app.workspace.getLeavesOfType(VIEW_TYPE_KORIAN).length > 0;
     const view = this.getView();
     const tabManager = view?.getTabManager();
 
@@ -233,14 +233,14 @@ export default class ClaudianPlugin extends Plugin {
       return tabManager.canCreateTab();
     }
 
-    if (hasClaudianLeaf) {
+    if (hasKorianLeaf) {
       return false;
     }
 
     return this.getLastKnownOpenTabCount() < this.getMaxTabsLimit();
   }
 
-  private async ensureViewOpen(): Promise<ClaudianView | null> {
+  private async ensureViewOpen(): Promise<KorianView | null> {
     const existingView = this.getView();
     if (existingView) {
       return existingView;
@@ -274,12 +274,12 @@ export default class ClaudianPlugin extends Plugin {
 
   async loadSettings() {
     this.storage = new SharedStorageService(this);
-    const { claudian } = await this.storage.initialize();
+    const { korian } = await this.storage.initialize();
     this.lastKnownTabManagerState = await this.storage.getTabManagerState();
 
     this.settings = {
-      ...DEFAULT_CLAUDIAN_SETTINGS,
-      ...claudian,
+      ...DEFAULT_KORIAN_SETTINGS,
+      ...korian,
     };
 
     // Plan mode is ephemeral — normalize back to normal on load so the app
@@ -391,7 +391,7 @@ export default class ClaudianPlugin extends Plugin {
       this.settings,
     );
 
-    await this.storage.saveClaudianSettings(this.settings);
+    await this.storage.saveKorianSettings(this.settings);
   }
 
   /** Updates and persists environment variables, restarting processes to apply changes. */
@@ -731,17 +731,17 @@ export default class ClaudianPlugin extends Plugin {
     await this.storage.setTabManagerState(state);
   }
 
-  getView(): ClaudianView | null {
-    const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_CLAUDIAN);
-    return leaves.map(leaf => leaf.view).find(isClaudianView) ?? null;
+  getView(): KorianView | null {
+    const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_KORIAN);
+    return leaves.map(leaf => leaf.view).find(isKorianView) ?? null;
   }
 
-  getAllViews(): ClaudianView[] {
-    const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_CLAUDIAN);
-    return leaves.map(leaf => leaf.view).filter(isClaudianView);
+  getAllViews(): KorianView[] {
+    const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_KORIAN);
+    return leaves.map(leaf => leaf.view).filter(isKorianView);
   }
 
-  findConversationAcrossViews(conversationId: string): { view: ClaudianView; tabId: string } | null {
+  findConversationAcrossViews(conversationId: string): { view: KorianView; tabId: string } | null {
     for (const view of this.getAllViews()) {
       const tabManager = view.getTabManager();
       if (!tabManager) continue;

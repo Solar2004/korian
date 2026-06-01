@@ -21,7 +21,7 @@ import { buildResultErrorMessage } from '@test/helpers/sdkMessages';
 
 import { getActionDescription, getActionPattern } from '@/core/security/ApprovalManager';
 import { getPathFromToolInput } from '@/core/tools/toolInput';
-import { ClaudianService } from '@/providers/claude/runtime/ClaudeChatRuntime';
+import { KorianService } from '@/providers/claude/runtime/ClaudeChatRuntime';
 import { resolveClaudeCliPath } from '@/providers/claude/runtime/ClaudeCliResolver';
 import { transformSDKMessage } from '@/providers/claude/stream/transformClaudeMessage';
 import {
@@ -134,15 +134,15 @@ function createMockPlugin(settings: Record<string, unknown> = {}) {
   return mockPlugin;
 }
 
-describe('ClaudianService', () => {
-  let service: ClaudianService;
+describe('KorianService', () => {
+  let service: KorianService;
   let mockPlugin: any;
 
   beforeEach(() => {
     jest.clearAllMocks();
     resetMockMessages();
     mockPlugin = createMockPlugin();
-    service = new ClaudianService(mockPlugin, createMockMcpManager());
+    service = new KorianService(mockPlugin, createMockMcpManager());
   });
 
   afterEach(() => {
@@ -214,7 +214,7 @@ describe('ClaudianService', () => {
           mockPlugin.getActiveEnvironmentVariables()
         )
       );
-      service = new ClaudianService(mockPlugin, createMockMcpManager());
+      service = new KorianService(mockPlugin, createMockMcpManager());
 
       (fs.existsSync as jest.Mock).mockImplementation((p: string) => p === customPath);
       (fs.statSync as jest.Mock).mockReturnValue({ isFile: () => true });
@@ -245,7 +245,7 @@ describe('ClaudianService', () => {
           mockPlugin.getActiveEnvironmentVariables()
         )
       );
-      service = new ClaudianService(mockPlugin, createMockMcpManager());
+      service = new KorianService(mockPlugin, createMockMcpManager());
 
       const homeDir = os.homedir();
       const autoDetectedPath = path.join(homeDir, '.claude', 'local', 'claude');
@@ -281,7 +281,7 @@ describe('ClaudianService', () => {
           mockPlugin.getActiveEnvironmentVariables()
         )
       );
-      service = new ClaudianService(mockPlugin, createMockMcpManager());
+      service = new KorianService(mockPlugin, createMockMcpManager());
 
       const homeDir = os.homedir();
       const autoDetectedPath = path.join(homeDir, '.claude', 'local', 'claude');
@@ -317,7 +317,7 @@ describe('ClaudianService', () => {
           mockPlugin.getActiveEnvironmentVariables()
         )
       );
-      service = new ClaudianService(mockPlugin, createMockMcpManager());
+      service = new KorianService(mockPlugin, createMockMcpManager());
 
       const homeDir = os.homedir();
       const autoDetectedPath = path.join(homeDir, '.claude', 'local', 'claude');
@@ -363,7 +363,7 @@ describe('ClaudianService', () => {
           mockPlugin.getActiveEnvironmentVariables()
         )
       );
-      service = new ClaudianService(mockPlugin, createMockMcpManager());
+      service = new KorianService(mockPlugin, createMockMcpManager());
 
       (fs.existsSync as jest.Mock).mockImplementation((p: string) => p === firstPath);
       (fs.statSync as jest.Mock).mockReturnValue({ isFile: () => true });
@@ -848,7 +848,7 @@ describe('ClaudianService', () => {
           },
         },
       };
-      service = new ClaudianService(mockPlugin, createMockMcpManager());
+      service = new KorianService(mockPlugin, createMockMcpManager());
 
       const chunks: any[] = [];
       for await (const chunk of service.query('hello')) {
@@ -1568,7 +1568,7 @@ describe('ClaudianService', () => {
     it('updates permission mode via setPermissionMode when going from YOLO to normal', async () => {
       // Start in YOLO mode
       mockPlugin.settings.permissionMode = 'yolo';
-      service = new ClaudianService(mockPlugin, createMockMcpManager());
+      service = new KorianService(mockPlugin, createMockMcpManager());
 
       const chunks1: any[] = [];
       for await (const c of service.query('first')) chunks1.push(c);
@@ -1587,7 +1587,7 @@ describe('ClaudianService', () => {
     it('updates permission mode via setPermissionMode when going from normal to YOLO', async () => {
       // Start in normal mode
       mockPlugin.settings.permissionMode = 'normal';
-      service = new ClaudianService(mockPlugin, createMockMcpManager());
+      service = new KorianService(mockPlugin, createMockMcpManager());
 
       const chunks1: any[] = [];
       for await (const c of service.query('first')) chunks1.push(c);

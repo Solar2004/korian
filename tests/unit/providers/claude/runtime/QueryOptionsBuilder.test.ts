@@ -1,4 +1,4 @@
-import type { ClaudianSettings } from '@/core/types/settings';
+import type { KorianSettings } from '@/core/types/settings';
 import type { QueryOptionsContext } from '@/providers/claude/runtime/ClaudeQueryOptionsBuilder';
 import { QueryOptionsBuilder } from '@/providers/claude/runtime/ClaudeQueryOptionsBuilder';
 import type { PersistentQueryConfig } from '@/providers/claude/runtime/types';
@@ -34,7 +34,7 @@ function createMockPluginManager() {
 }
 
 // Create a mock settings object
-function createMockSettings(overrides: Partial<ClaudianSettings> = {}): ClaudianSettings {
+function createMockSettings(overrides: Partial<KorianSettings> = {}): KorianSettings {
   return {
     permissions: [],
     permissionMode: 'yolo',
@@ -57,7 +57,7 @@ function createMockSettings(overrides: Partial<ClaudianSettings> = {}): Claudian
     claudeCliPath: '',
     enableChrome: false,
     ...overrides,
-  } as ClaudianSettings;
+  } as KorianSettings;
 }
 
 function createMockPersistentQueryConfig(

@@ -5,8 +5,8 @@ import { getHiddenProviderCommandSet } from '../../core/providers/commands/hidde
 import { ProviderRegistry } from '../../core/providers/ProviderRegistry';
 import { ProviderSettingsCoordinator } from '../../core/providers/ProviderSettingsCoordinator';
 import { DEFAULT_CHAT_PROVIDER_ID, type ProviderId } from '../../core/providers/types';
-import { VIEW_TYPE_CLAUDIAN } from '../../core/types';
-import type ClaudianPlugin from '../../main';
+import { VIEW_TYPE_KORIAN } from '../../core/types';
+import type KorianPlugin from '../../main';
 import { createProviderIconSvg } from '../../shared/icons';
 import {
   cancelScheduledAnimationFrame,
@@ -30,8 +30,8 @@ type LoadableView = {
   load: () => Promise<void> | void;
 };
 
-export class ClaudianView extends ItemView {
-  private plugin: ClaudianPlugin;
+export class KorianView extends ItemView {
+  private plugin: KorianPlugin;
 
   // Tab management
   private tabManager: TabManager | null = null;
@@ -62,12 +62,12 @@ export class ClaudianView extends ItemView {
   // Debouncing for tab state persistence
   private pendingPersist: number | null = null;
 
-  constructor(leaf: WorkspaceLeaf, plugin: ClaudianPlugin) {
+  constructor(leaf: WorkspaceLeaf, plugin: KorianPlugin) {
     super(leaf);
     this.plugin = plugin;
 
     // Hover Editor compatibility: Define load as an instance method that can't be
-    // overwritten by prototype patching. Hover Editor patches ClaudianView.prototype.load
+    // overwritten by prototype patching. Hover Editor patches KorianView.prototype.load
     // after our class is defined, but instance methods take precedence over prototype methods.
     const prototype = Object.getPrototypeOf(this) as LoadableView;
     const originalLoad = prototype.load.bind(this) as () => Promise<void> | void;
@@ -90,11 +90,11 @@ export class ClaudianView extends ItemView {
   }
 
   getViewType(): string {
-    return VIEW_TYPE_CLAUDIAN;
+    return VIEW_TYPE_KORIAN;
   }
 
   getDisplayText(): string {
-    return 'Claudian';
+    return 'Korian';
   }
 
   getIcon(): string {
@@ -131,7 +131,7 @@ export class ClaudianView extends ItemView {
       tab.ui.permissionToggle?.updateDisplay();
       tab.ui.serviceTierToggle?.updateDisplay();
       tab.dom.inputWrapper.toggleClass(
-        'claudian-input-plan-mode',
+        'korian-input-plan-mode',
         providerSettings.permissionMode === 'plan' && capabilities.supportsPlanMode,
       );
     }
@@ -172,13 +172,13 @@ export class ClaudianView extends ItemView {
 
     this.viewContainerEl = container;
     this.viewContainerEl.empty();
-    this.viewContainerEl.addClass('claudian-container');
+    this.viewContainerEl.addClass('korian-container');
 
-    const header = this.viewContainerEl.createDiv({ cls: 'claudian-header' });
+    const header = this.viewContainerEl.createDiv({ cls: 'korian-header' });
     this.buildHeader(header);
 
     this.navRowContent = this.buildNavRowContent();
-    this.tabContentEl = this.viewContainerEl.createDiv({ cls: 'claudian-tab-content-container' });
+    this.tabContentEl = this.viewContainerEl.createDiv({ cls: 'korian-tab-content-container' });
 
     this.tabManager = new TabManager(
       this.plugin,
@@ -253,17 +253,17 @@ export class ClaudianView extends ItemView {
     this.headerEl = header;
 
     // Title slot container (logo + title or tabs)
-    this.titleSlotEl = header.createDiv({ cls: 'claudian-title-slot' });
+    this.titleSlotEl = header.createDiv({ cls: 'korian-title-slot' });
 
     // Logo (hidden when 2+ tabs) — populated by syncHeaderLogo()
-    this.logoEl = this.titleSlotEl.createSpan({ cls: 'claudian-logo' });
+    this.logoEl = this.titleSlotEl.createSpan({ cls: 'korian-logo' });
     this.syncHeaderLogo(DEFAULT_CHAT_PROVIDER_ID);
 
     // Title text (hidden in header mode when 2+ tabs)
-    this.titleTextEl = this.titleSlotEl.createEl('h4', { text: 'Claudian', cls: 'claudian-title-text' });
+    this.titleTextEl = this.titleSlotEl.createEl('h4', { text: 'Korian', cls: 'korian-title-text' });
 
     // Header actions container (for header mode - initially hidden)
-    this.headerActionsEl = header.createDiv({ cls: 'claudian-header-actions claudian-header-actions-slot claudian-hidden' });
+    this.headerActionsEl = header.createDiv({ cls: 'korian-header-actions korian-header-actions-slot korian-hidden' });
   }
 
   /**
@@ -278,7 +278,7 @@ export class ClaudianView extends ItemView {
 
     // Tab badges (left side in nav row, or in title slot for header mode)
     this.tabBarContainerEl = activeDocument.createElement('div');
-    this.tabBarContainerEl.className = 'claudian-tab-bar-container';
+    this.tabBarContainerEl.className = 'korian-tab-bar-container';
     this.tabBar = new TabBar(this.tabBarContainerEl, {
       onTabClick: (tabId) => this.handleTabClick(tabId),
       onTabClose: (tabId) => {
@@ -292,10 +292,10 @@ export class ClaudianView extends ItemView {
 
     // Header actions (right side)
     this.headerActionsContent = activeDocument.createElement('div');
-    this.headerActionsContent.className = 'claudian-header-actions';
+    this.headerActionsContent.className = 'korian-header-actions';
 
     // New tab button (plus icon)
-    this.newTabButtonEl = this.headerActionsContent.createDiv({ cls: 'claudian-header-btn claudian-new-tab-btn' });
+    this.newTabButtonEl = this.headerActionsContent.createDiv({ cls: 'korian-header-btn korian-new-tab-btn' });
     setIcon(this.newTabButtonEl, 'square-plus');
     this.newTabButtonEl.setAttribute('aria-label', 'New tab');
     this.newTabButtonEl.addEventListener('click', () => {
@@ -303,7 +303,7 @@ export class ClaudianView extends ItemView {
     });
 
     // New conversation button (square-pen icon - new conversation in current tab)
-    const newBtn = this.headerActionsContent.createDiv({ cls: 'claudian-header-btn' });
+    const newBtn = this.headerActionsContent.createDiv({ cls: 'korian-header-btn' });
     setIcon(newBtn, 'square-pen');
     newBtn.setAttribute('aria-label', 'New conversation');
     newBtn.addEventListener('click', () => {
@@ -314,12 +314,12 @@ export class ClaudianView extends ItemView {
     });
 
     // History dropdown
-    const historyContainer = this.headerActionsContent.createDiv({ cls: 'claudian-history-container' });
-    const historyBtn = historyContainer.createDiv({ cls: 'claudian-header-btn' });
+    const historyContainer = this.headerActionsContent.createDiv({ cls: 'korian-history-container' });
+    const historyBtn = historyContainer.createDiv({ cls: 'korian-header-btn' });
     setIcon(historyBtn, 'history');
     historyBtn.setAttribute('aria-label', 'Chat history');
 
-    this.historyDropdown = historyContainer.createDiv({ cls: 'claudian-history-menu' });
+    this.historyDropdown = historyContainer.createDiv({ cls: 'korian-history-menu' });
 
     historyBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -330,7 +330,7 @@ export class ClaudianView extends ItemView {
 
     // Create a wrapper div to hold the fragment (for input mode nav row)
     const wrapper = activeDocument.createElement('div');
-    wrapper.className = 'claudian-input-nav-content';
+    wrapper.className = 'korian-input-nav-content';
     wrapper.appendChild(fragment);
     return wrapper;
   }
@@ -352,7 +352,7 @@ export class ClaudianView extends ItemView {
       }
       if (this.headerActionsEl) {
         this.headerActionsEl.appendChild(this.headerActionsContent);
-        this.headerActionsEl.removeClass('claudian-hidden');
+        this.headerActionsEl.removeClass('korian-hidden');
       }
     } else {
       // Input mode: Both go to active tab's navRowEl via the wrapper
@@ -365,7 +365,7 @@ export class ClaudianView extends ItemView {
       }
       // Hide header actions slot when in input mode
       if (this.headerActionsEl) {
-        this.headerActionsEl.addClass('claudian-hidden');
+        this.headerActionsEl.addClass('korian-hidden');
       }
     }
   }
@@ -380,7 +380,7 @@ export class ClaudianView extends ItemView {
     const isHeaderMode = this.plugin.settings.tabBarPosition === 'header';
 
     // Update container class for CSS styling
-    this.viewContainerEl.toggleClass('claudian-container--header-mode', isHeaderMode);
+    this.viewContainerEl.toggleClass('korian-container--header-mode', isHeaderMode);
 
     // Move nav content to appropriate location
     this.updateNavRowLocation();
@@ -454,16 +454,16 @@ export class ClaudianView extends ItemView {
     const isHeaderMode = this.plugin.settings.tabBarPosition === 'header';
 
     // Hide tab badges when only 1 tab, show when 2+
-    this.tabBarContainerEl.toggleClass('claudian-hidden', !showTabBar);
+    this.tabBarContainerEl.toggleClass('korian-hidden', !showTabBar);
 
     // In header mode, badges replace logo/title in the same location
     // In input mode, keep logo/title visible (badges are in nav row)
     const hideBranding = showTabBar && isHeaderMode;
     if (this.logoEl) {
-      this.logoEl.toggleClass('claudian-hidden', hideBranding);
+      this.logoEl.toggleClass('korian-hidden', hideBranding);
     }
     if (this.titleTextEl) {
-      this.titleTextEl.toggleClass('claudian-hidden', hideBranding);
+      this.titleTextEl.toggleClass('korian-hidden', hideBranding);
     }
 
     this.updateNewTabButtonVisibility();
@@ -473,7 +473,7 @@ export class ClaudianView extends ItemView {
     if (!this.newTabButtonEl || !this.tabManager) return;
 
     const canCreateTab = this.tabManager.canCreateTab();
-    this.newTabButtonEl.toggleClass('claudian-hidden', !canCreateTab);
+    this.newTabButtonEl.toggleClass('korian-hidden', !canCreateTab);
     if (canCreateTab) {
       this.newTabButtonEl.removeAttribute('aria-disabled');
       this.newTabButtonEl.removeAttribute('aria-hidden');

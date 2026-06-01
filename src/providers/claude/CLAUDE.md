@@ -60,11 +60,11 @@ SDK session files are tree-structured — rewind + re-prompt creates branches. `
 
 ### MCP Dual-Namespace
 
-`.claude/mcp.json` stores servers in two namespaces: `mcpServers` (CC-compatible, read by the CLI) and `_claudian.servers` (Claudian metadata: enabled, contextSaving, disabledTools, description). CC ignores the `_claudian` key. This avoids polluting the CC-compatible format with Claudian-specific data.
+`.claude/mcp.json` stores servers in two namespaces: `mcpServers` (CC-compatible, read by the CLI) and `_korian.servers` (Korian metadata: enabled, contextSaving, disabledTools, description). CC ignores the `_korian` key. This avoids polluting the CC-compatible format with Korian-specific data.
 
 ### Plugin Dual-Write
 
-Plugin enabled state is written to both `.claude/settings.json` (so the CC CLI also respects it) and kept in `PluginManager.plugins[].enabled` (for Claudian's restart check). These must stay in sync.
+Plugin enabled state is written to both `.claude/settings.json` (so the CC CLI also respects it) and kept in `PluginManager.plugins[].enabled` (for Korian's restart check). These must stay in sync.
 
 ### Slash Command ID Encoding
 

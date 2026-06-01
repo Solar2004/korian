@@ -1,12 +1,12 @@
 /* Input area */
-.claudian-input-container {
+.korian-input-container {
   position: relative;
   padding: 12px 0 0 0;
 }
 
 /* Input wrapper (border container) - flex column so textarea expands when no chips */
 /* Height calculation: context row (36px) + textarea min (60px) + toolbar (38px) + border (2px) = 136px */
-.claudian-input-wrapper {
+.korian-input-wrapper {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -18,7 +18,7 @@
 
 /* Context row (file chip start, selection indicator end) - inside input wrapper at top */
 /* Collapsed by default; expanded via .has-content class; textarea fills remaining space */
-.claudian-context-row {
+.korian-context-row {
   display: none;
   align-items: flex-start;
   justify-content: flex-start;
@@ -28,12 +28,12 @@
 }
 
 /* Show context row when it has visible content */
-.claudian-context-row.has-content {
+.korian-context-row.has-content {
   display: flex;
 }
 
 /* Nav row (tab badges start, header icons end) - above input wrapper */
-.claudian-input-nav-row {
+.korian-input-nav-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -41,7 +41,7 @@
   min-height: 0;
 }
 
-.claudian-input-nav-content {
+.korian-input-nav-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -50,16 +50,16 @@
 }
 
 /* Header mode: hide nav row above input (content moved to header) */
-.claudian-container--header-mode .claudian-input-nav-row {
+.korian-container--header-mode .korian-input-nav-row {
   display: none;
 }
 
 /* Selection indicator (shown when text is selected in editor) */
 /* Match file chip height (24px): chip has 16px remove button + 6px padding + 2px border */
 /* Indicator: 12px text + 10px padding (5+5) + 2px border = 24px */
-.claudian-selection-indicator,
-.claudian-browser-selection-indicator,
-.claudian-canvas-indicator {
+.korian-selection-indicator,
+.korian-browser-selection-indicator,
+.korian-canvas-indicator {
   color: #7abaff;
   font-size: 12px;
   line-height: 1;
@@ -77,11 +77,11 @@
   text-overflow: ellipsis;
 }
 
-.claudian-input {
+.korian-input {
   width: 100%;
   flex: 1 1 0;
-  min-height: var(--claudian-textarea-min-height, 60px);
-  max-height: var(--claudian-textarea-max-height, none);
+  min-height: var(--korian-textarea-min-height, 60px);
+  max-height: var(--korian-textarea-max-height, none);
   resize: none;
   padding: 8px 10px 10px 10px;
   border: none !important;
@@ -96,20 +96,20 @@
   unicode-bidi: plaintext; /* Proper BiDi text handling for mixed RTL/LTR */
 }
 
-.claudian-input:hover,
-.claudian-input:focus {
+.korian-input:hover,
+.korian-input:focus {
   outline: none !important;
   border: none !important;
   background: transparent !important;
   box-shadow: none !important;
 }
 
-.claudian-input::placeholder {
+.korian-input::placeholder {
   color: var(--text-muted);
 }
 
 /* Input toolbar */
-.claudian-input-toolbar {
+.korian-input-toolbar {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -118,13 +118,13 @@
 }
 
 /* File indicator (attached files) */
-.claudian-file-indicator {
+.korian-file-indicator {
   display: none;
   flex-wrap: wrap;
   gap: 6px;
 }
 
-.claudian-file-chip {
+.korian-file-chip {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -138,26 +138,26 @@
   cursor: pointer;
 }
 
-.claudian-file-chip-icon {
+.korian-file-chip-icon {
   display: flex;
   align-items: center;
   color: var(--text-muted);
   flex-shrink: 0;
 }
 
-.claudian-file-chip-icon svg {
+.korian-file-chip-icon svg {
   width: 12px;
   height: 12px;
 }
 
-.claudian-file-chip-name {
+.korian-file-chip-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--text-normal);
 }
 
-.claudian-file-chip-remove {
+.korian-file-chip-remove {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -171,17 +171,17 @@
   transition: background 0.15s ease, color 0.15s ease;
 }
 
-.claudian-file-chip-remove:hover {
+.korian-file-chip-remove:hover {
   background: var(--background-modifier-hover);
   color: var(--text-normal);
 }
 
-.claudian-file-chip:hover {
+.korian-file-chip:hover {
   background: var(--background-modifier-hover);
 }
 
 /* Composer queue status row (queued follow-up preview + steer action) */
-.claudian-input-queue-row {
+.korian-input-queue-row {
   display: none;
   font-size: 12px;
   color: var(--text-muted);
@@ -191,7 +191,7 @@
   padding: 0 2px 8px 2px;
 }
 
-.claudian-queue-indicator-text {
+.korian-queue-indicator-text {
   min-width: 0;
   flex: 1 1 auto;
   white-space: nowrap;
@@ -199,14 +199,14 @@
   text-overflow: ellipsis;
 }
 
-.claudian-queue-indicator-actions {
+.korian-queue-indicator-actions {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.claudian-queue-indicator-action {
+.korian-queue-indicator-action {
   flex: 0 0 auto;
   padding: 1px 8px;
   border: 0;
@@ -216,17 +216,17 @@
   cursor: pointer;
 }
 
-.claudian-queue-indicator-action:hover {
+.korian-queue-indicator-action:hover {
   text-decoration: underline;
 }
 
-.claudian-queue-indicator-action[disabled] {
+.korian-queue-indicator-action[disabled] {
   color: var(--text-faint);
   cursor: default;
   text-decoration: none;
 }
 
-.claudian-queue-indicator-icon-action {
+.korian-queue-indicator-icon-action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -241,29 +241,29 @@
   cursor: pointer;
 }
 
-.claudian-queue-indicator-icon-action:hover {
+.korian-queue-indicator-icon-action:hover {
   background: var(--background-modifier-hover);
   color: var(--text-normal);
 }
 
-.claudian-queue-indicator-icon-action svg {
+.korian-queue-indicator-icon-action svg {
   width: 14px;
   height: 14px;
 }
 
 /* Light blue border when instruction mode is active */
-.claudian-input-instruction-mode {
+.korian-input-instruction-mode {
   border-color: #60a5fa !important;
   box-shadow: 0 0 0 1px #60a5fa;
 }
 
 /* Pink border when bash mode is active */
-.claudian-input-bang-bash-mode {
+.korian-input-bang-bash-mode {
   border-color: #f472b6 !important;
   box-shadow: 0 0 0 1px #f472b6;
 }
 
 /* Monospace input while in bash mode */
-.claudian-input-wrapper.claudian-input-bang-bash-mode .claudian-input {
+.korian-input-wrapper.korian-input-bang-bash-mode .korian-input {
   font-family: var(--font-monospace);
 }

@@ -1,6 +1,6 @@
 import {
-  CLAUDIAN_SETTINGS_PATH,
-  LEGACY_CLAUDIAN_SETTINGS_PATH,
+  KORIAN_SETTINGS_PATH,
+  LEGACY_KORIAN_SETTINGS_PATH,
 } from '../../core/bootstrap/StoragePaths';
 import {
   normalizeHiddenCommandList,
@@ -15,7 +15,7 @@ import type { VaultFileAdapter } from '../../core/storage/VaultFileAdapter';
 import {
   CHAT_VIEW_PLACEMENTS,
   type ChatViewPlacement,
-  type ClaudianSettings,
+  type KorianSettings,
   type EnvironmentScope,
   type EnvSnippet,
   type HiddenProviderCommands,
@@ -37,14 +37,14 @@ import {
   getPiProviderSettings,
   updatePiProviderSettings,
 } from '../../providers/pi/settings';
-import { DEFAULT_CLAUDIAN_SETTINGS } from './defaultSettings';
+import { DEFAULT_KORIAN_SETTINGS } from './defaultSettings';
 
 export {
-  CLAUDIAN_SETTINGS_PATH,
-  LEGACY_CLAUDIAN_SETTINGS_PATH,
+  KORIAN_SETTINGS_PATH,
+  LEGACY_KORIAN_SETTINGS_PATH,
 };
 
-export type StoredClaudianSettings = ClaudianSettings;
+export type StoredKorianSettings = KorianSettings;
 
 const LEGACY_TOP_LEVEL_PROVIDER_FIELDS = [
   'claudeSafeMode',
@@ -104,7 +104,7 @@ function normalizeChatViewPlacement(
     return legacyOpenInMainTab ? 'main-tab' : 'right-sidebar';
   }
 
-  return DEFAULT_CLAUDIAN_SETTINGS.chatViewPlacement;
+  return DEFAULT_KORIAN_SETTINGS.chatViewPlacement;
 }
 
 function shouldPersistChatViewPlacementMigration(
@@ -271,10 +271,10 @@ function mergeLegacyClaudeHiddenCommands(
   };
 }
 
-export class ClaudianSettingsStorage {
+export class KorianSettingsStorage {
   constructor(private adapter: VaultFileAdapter) {}
 
-  async load(): Promise<StoredClaudianSettings> {
+  async load(): Promise<StoredKorianSettings> {
     const settingsPath = await this.getLoadPath();
     if (!settingsPath) {
       return this.getDefaults();
@@ -339,7 +339,7 @@ export class ClaudianSettingsStorage {
     );
 
     if (
-      settingsPath !== CLAUDIAN_SETTINGS_PATH
+      settingsPath !== KORIAN_SETTINGS_PATH
       || (
       hasLegacyTopLevelProviderFields(stored)
       || 'show1MModel' in stored
@@ -365,25 +365,25 @@ export class ClaudianSettingsStorage {
     return merged;
   }
 
-  async save(settings: StoredClaudianSettings): Promise<void> {
+  async save(settings: StoredKorianSettings): Promise<void> {
     const content = JSON.stringify(
       stripLegacyFields(settings),
       null,
       2,
     );
-    await this.adapter.write(CLAUDIAN_SETTINGS_PATH, content);
+    await this.adapter.write(KORIAN_SETTINGS_PATH, content);
     await this.deleteLegacyFileIfPresent();
   }
 
   async exists(): Promise<boolean> {
-    if (await this.adapter.exists(CLAUDIAN_SETTINGS_PATH)) {
+    if (await this.adapter.exists(KORIAN_SETTINGS_PATH)) {
       return true;
     }
 
-    return this.adapter.exists(LEGACY_CLAUDIAN_SETTINGS_PATH);
+    return this.adapter.exists(LEGACY_KORIAN_SETTINGS_PATH);
   }
 
-  async update(updates: Partial<StoredClaudianSettings>): Promise<void> {
+  async update(updates: Partial<StoredKorianSettings>): Promise<void> {
     const current = await this.load();
     await this.save({ ...current, ...updates });
   }
@@ -411,25 +411,25 @@ export class ClaudianSettingsStorage {
     await this.save(current);
   }
 
-  private getDefaults(): StoredClaudianSettings {
-    return DEFAULT_CLAUDIAN_SETTINGS;
+  private getDefaults(): StoredKorianSettings {
+    return DEFAULT_KORIAN_SETTINGS;
   }
 
   private async getLoadPath(): Promise<string | null> {
-    if (await this.adapter.exists(CLAUDIAN_SETTINGS_PATH)) {
-      return CLAUDIAN_SETTINGS_PATH;
+    if (await this.adapter.exists(KORIAN_SETTINGS_PATH)) {
+      return KORIAN_SETTINGS_PATH;
     }
 
-    if (await this.adapter.exists(LEGACY_CLAUDIAN_SETTINGS_PATH)) {
-      return LEGACY_CLAUDIAN_SETTINGS_PATH;
+    if (await this.adapter.exists(LEGACY_KORIAN_SETTINGS_PATH)) {
+      return LEGACY_KORIAN_SETTINGS_PATH;
     }
 
     return null;
   }
 
   private async deleteLegacyFileIfPresent(): Promise<void> {
-    if (await this.adapter.exists(LEGACY_CLAUDIAN_SETTINGS_PATH)) {
-      await this.adapter.delete(LEGACY_CLAUDIAN_SETTINGS_PATH);
+    if (await this.adapter.exists(LEGACY_KORIAN_SETTINGS_PATH)) {
+      await this.adapter.delete(LEGACY_KORIAN_SETTINGS_PATH);
     }
   }
 }

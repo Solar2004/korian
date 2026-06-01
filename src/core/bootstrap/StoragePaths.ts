@@ -1,7 +1,7 @@
-export const CLAUDIAN_STORAGE_PATH = '.claudian';
+export const KORIAN_STORAGE_PATH = '.korian';
 
-export const LEGACY_CLAUDIAN_SETTINGS_PATH = '.claude/claudian-settings.json';
-export const CLAUDIAN_SETTINGS_PATH = `${CLAUDIAN_STORAGE_PATH}/claudian-settings.json`;
+export const LEGACY_KORIAN_SETTINGS_PATH = '.claude/korian-settings.json';
+export const KORIAN_SETTINGS_PATH = `${KORIAN_STORAGE_PATH}/korian-settings.json`;
 
 export const LEGACY_SESSIONS_PATH = '.claude/sessions';
-export const SESSIONS_PATH = `${CLAUDIAN_STORAGE_PATH}/sessions`;
+export const SESSIONS_PATH = `${KORIAN_STORAGE_PATH}/sessions`;
